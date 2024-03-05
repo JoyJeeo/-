@@ -17,15 +17,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     carouselchart.cpp \
+    Windows\Login_Paper\loginwin.cpp \
     main.cpp \
-    controlwin.cpp
+    Windows\Login_Paper\registerwin.cpp
 
 HEADERS += \
     carouselchart.h \
-    controlwin.h
+    Windows\Login_Paper\loginwin.h \
+    Windows\Login_Paper\registerwin.h
 
 FORMS += \
-    controlwin.ui
+    Windows\Login_Paper\loginwin.ui \
+    Windows\Login_Paper\registerwin.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

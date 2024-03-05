@@ -1,5 +1,4 @@
 #include "carouselchart.h"
-#include "ui_carouselchart.h"
 
 #include <QPropertyAnimation>
 #include <QDebug>

@@ -1,11 +1,11 @@
-#include "controlwin.h"
+#include "Windows\Login_Paper\loginwin.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    controlwin w;
+    loginwin w;
     w.show();
     return a.exec();
 }
