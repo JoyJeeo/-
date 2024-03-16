@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "registerwin.h"
+#include "Windows\Control_Pager\controlwin.h"
 
 namespace Ui {
 class loginwin;
@@ -16,6 +17,9 @@ public:
     explicit loginwin(QWidget *parent = nullptr);
     ~loginwin();
 
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+
 private slots:
     void on_register_pbtn_clicked();
     void after_register_login();
@@ -25,6 +29,7 @@ private slots:
 private:
     Ui::loginwin *ui;
     registerwin *re;
+    controlwin *control_win;
 };
 
 #endif // LOGINWIN_H

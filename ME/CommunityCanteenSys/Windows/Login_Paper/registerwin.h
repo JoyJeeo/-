@@ -18,8 +18,13 @@ public:
 signals:
     void register_complete();
 
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+
 private slots:
-    void on_register_pbtn_3_clicked();
+    void on_register_pbtn_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::registerwin *ui;

@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,19 +18,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     carouselchart.cpp \
     Windows\Login_Paper\loginwin.cpp \
+    Windows\Control_Pager\controlwin.cpp \
     main.cpp \
-    Windows\Login_Paper\registerwin.cpp
+    Windows\Login_Paper\registerwin.cpp \
+    Tools/tool_00_environment.cpp
 
 HEADERS += \
     carouselchart.h \
     Windows\Login_Paper\loginwin.h \
-    Windows\Login_Paper\registerwin.h
+    Windows\Login_Paper\registerwin.h \
+    Tools/tool_00_environment.h \
+    Windows\Control_Pager\controlwin.h
 
 FORMS += \
     Windows\Login_Paper\loginwin.ui \
-    Windows\Login_Paper\registerwin.ui
+    Windows\Login_Paper\registerwin.ui \
+    Windows\Control_Pager\controlwin.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RC_ICONS = _logo.ico
