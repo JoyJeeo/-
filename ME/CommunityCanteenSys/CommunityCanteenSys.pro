@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Windows\Admin_Paper\adminwin.cpp \
     carouselchart.cpp \
     Windows\Login_Paper\loginwin.cpp \
     Windows\Control_Pager\controlwin.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
     Tools/tool_00_environment.cpp
 
 HEADERS += \
+    Windows\Admin_Paper\adminwin.h \
     carouselchart.h \
     Windows\Login_Paper\loginwin.h \
     Windows\Login_Paper\registerwin.h \
@@ -33,7 +35,8 @@ HEADERS += \
 FORMS += \
     Windows\Login_Paper\loginwin.ui \
     Windows\Login_Paper\registerwin.ui \
-    Windows\Control_Pager\controlwin.ui
+    Windows\Control_Pager\controlwin.ui \
+    Windows\Admin_Paper\adminwin.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

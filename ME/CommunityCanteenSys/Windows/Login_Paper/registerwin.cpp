@@ -42,9 +42,6 @@ void registerwin::on_register_pbtn_clicked()
 
     if(next_flage == 1)
     {
-        // 内容输入有效字符判定【账号和密码】 【管理员删除部分用户】
-
-
         QSqlQuery query(*DB);
         QString sql = QString("select * from logininfo "
                               "where username = '%1';"

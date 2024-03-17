@@ -23,6 +23,7 @@ protected:
 private slots:
     void on_register_pbtn_clicked();
     void after_register_login();
+    void after_control_win();
 
     void on_login_pbtn_clicked();
 
