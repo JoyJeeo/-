@@ -1,6 +1,7 @@
 #include "Windows\Login_Paper\loginwin.h"
 
 #include <QApplication>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {

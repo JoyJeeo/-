@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1050</width>
-    <height>646</height>
+    <width>1081</width>
+    <height>661</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <rect>
      <x>0</x>
      <y>620</y>
-     <width>1041</width>
+     <width>1071</width>
      <height>22</height>
     </rect>
    </property>
@@ -94,7 +94,7 @@
    <property name="title">
     <string>数据明细</string>
    </property>
-   <widget class="QTableWidget" name="userPwd_Table">
+   <widget class="QTableWidget" name="detailsTable">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -103,16 +103,6 @@
       <height>571</height>
      </rect>
     </property>
-    <column>
-     <property name="text">
-      <string>用户名</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>密码</string>
-     </property>
-    </column>
    </widget>
   </widget>
   <widget class="QWidget" name="layoutWidget_2">
@@ -120,7 +110,7 @@
     <rect>
      <x>940</x>
      <y>10</y>
-     <width>100</width>
+     <width>132</width>
      <height>601</height>
     </rect>
    </property>
@@ -134,7 +124,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QPushButton" name="loadButton">
+          <widget class="QPushButton" name="load_login_btn">
            <property name="font">
             <font>
              <family>微软雅黑</family>
@@ -144,16 +134,16 @@
             <string notr="true"/>
            </property>
            <property name="text">
-            <string>加载数据</string>
+            <string>加载登录信息</string>
            </property>
            <property name="icon">
-            <iconset resource="../../../../../Cpp/Project_Learn/Qt_Excel/Images.qrc">
+            <iconset>
              <normaloff>:/images/resources/images/pg1.ico</normaloff>:/images/resources/images/pg1.ico</iconset>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="saveAllButton">
+          <widget class="QPushButton" name="save_all_btn">
            <property name="font">
             <font>
              <family>微软雅黑</family>
@@ -168,7 +158,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="addButton">
+          <widget class="QPushButton" name="add_btn">
            <property name="font">
             <font>
              <family>微软雅黑</family>
@@ -183,7 +173,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="deleteButton">
+          <widget class="QPushButton" name="delete_btn">
            <property name="font">
             <font>
              <family>微软雅黑</family>
@@ -198,7 +188,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="saveButton">
+          <widget class="QPushButton" name="save_btn">
            <property name="font">
             <font>
              <family>微软雅黑</family>
@@ -213,7 +203,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="back">
+          <widget class="QPushButton" name="clear_btn">
+           <property name="text">
+            <string>清空界面</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="back_btn">
            <property name="text">
             <string>返回主界面</string>
            </property>
@@ -260,8 +257,6 @@
    </layout>
   </widget>
  </widget>
- <resources>
-  <include location="../../../../../Cpp/Project_Learn/Qt_Excel/Images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

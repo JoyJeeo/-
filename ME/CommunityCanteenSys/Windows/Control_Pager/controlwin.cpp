@@ -33,6 +33,7 @@ void controlwin::on_admin_back()
 void controlwin::on_admin_btn_clicked()
 {
     this->hide();
+    admin_win->triggered();
     admin_win->show();
 }
 
@@ -40,6 +41,8 @@ void controlwin::triggered()
 {
     if(user_name == "admin")
         ui->admin_btn->show();
+    else
+        ui->admin_btn->hide();
     ui->username_label->setText(user_name);
 }
 
