@@ -158,6 +158,21 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="insert_btn">
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="text">
+            <string>插入条目</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="add_btn">
            <property name="font">
             <font>
@@ -243,7 +258,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QPushButton" name="updateStatusButton">
+          <widget class="QPushButton" name="update_status_btn">
            <property name="text">
             <string>更新状态</string>
            </property>
