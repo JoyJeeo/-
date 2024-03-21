@@ -5,6 +5,10 @@
 #include <QDebug>
 #include <QMessageBox>
 
+/*
+ * 对于空行的处理【现在的功能支持非空行的保存】
+ * admin需要清楚，保存的用户名中不能有重名，且不能使用空行
+*/
 adminwin::adminwin(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::adminwin)
@@ -32,34 +36,51 @@ void adminwin::triggered()
 
 }
 
-bool adminwin::is_insert(int index)
+void adminwin::move_curRow_base(int curRow, int step) // step可正可负
 {
-    bool flage = false;
+    QSqlQuery query(*DB);
+    query.exec("select * "
+               "from logininfo order by curid;");
 
-    for(auto dex : insert_indexs)
+    int base_rowCnt = query.size();
+    vector<int> biggers;
+    for(int i = 0;i < base_rowCnt;i++)
     {
-        if(dex == index)
+        query.next();
+        if(query.value(2).toInt() > curRow)
         {
-            flage = true;
-            break;
+            biggers.push_back(query.value(2).toInt());
         }
     }
 
-    return flage;
-}
+    int biggers_size = biggers.size();
 
-void adminwin::erase_insert(int index)
-{
-    insert_indexs.remove(index);
-}
-
-void adminwin::insert_insert(int index)
-{
-    for(auto pi = insert_indexs.begin();pi != insert_indexs.end();pi++)
+    /*
+     * 向大更新，必须从大到小更新
+     * 向小更新，必须从小到大更新
+     * 【就像推积木一样】【数据库会将所有符合where条件的数据一起进行更新】
+     * 【因此，在这种条件下的移动数据和合并数据有了新的算法】
+    */
+    if(step < 0)
     {
-        if(*pi > index) *pi++;
+        for(int i = 0;i < biggers_size;i++)
+        {
+            query.exec(QString("update logininfo set curid = '%1' "
+                               "where curid = '%2';")
+                      .arg(biggers[i] + step)
+                      .arg(biggers[i]));
+        }
     }
-    insert_indexs.push_back(index);
+    else
+    {
+        for(int i = biggers_size - 1;i >= 0 ;i--)
+        {
+            query.exec(QString("update logininfo set curid = '%1' "
+                               "where curid = '%2';")
+                      .arg(biggers[i] + step)
+                      .arg(biggers[i]));
+        }
+    }
 }
 
 void adminwin::on_load_login_btn_clicked()
@@ -79,17 +100,20 @@ void adminwin::on_load_login_btn_clicked()
 
     if(row > 0)
     {
-        ui->progress_Bar->setMaximum(row - 1);
+        /*
+         * Bar进度条的进度条规则为{0起始}[1,len]为有效进度长度
+        */
+        ui->progress_Bar->setMaximum(row);
         ui->progress_Bar->setValue(0);
         ui->process_Details->setText(QString("任务执行中..."));
 
         for (int i = 0;i < row; i++)
         {
-            ui->progress_Bar->setValue(i);
+            ui->progress_Bar->setValue(i + 1);
             query.next();
+            ui->detailsTable->insertRow(i);
             for (int j = 0; j < column; j++)
             {
-                ui->detailsTable->setRowCount(i + 1);
                 ui->detailsTable->setItem(i,j,new QTableWidgetItem(query.value(j).toString()));
                 ui->detailsTable->item(i,j)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
             }
@@ -116,22 +140,19 @@ void adminwin::on_save_all_btn_clicked()
 
     if(row > 0)
     {
-        // 修改save all ，table_rowCnt和base_rowCnt之间最小的内部做update，table到base做delete，base到table做insert
-        // 每次执行完，将insert_indexs全部清空
-
-        ui->progress_Bar->setMaximum(row - 1);
+        ui->progress_Bar->setMaximum(row);
         ui->progress_Bar->setValue(0);
         ui->process_Details->setText(QString("任务执行中..."));
 
         for (int i = 0; i < row; i++)
         {
-            ui->progress_Bar->setValue(i);
+            ui->progress_Bar->setValue(i + 1);
             order = QString("update logininfo set username = '%1', "
                                     "pwd = '%2' "
                                     "where curid = '%3';")
                     .arg(ui->detailsTable->item(i,0)->text())
                     .arg(ui->detailsTable->item(i,1)->text())
-                    .arg(i + 1);
+                    .arg(i);
             query.exec(order);
         }
 
@@ -147,6 +168,9 @@ void adminwin::on_update_status_btn_clicked()
 
 void adminwin::on_save_btn_clicked()
 {
+    ui->progress_Bar->setMaximum(3);
+    ui->progress_Bar->setValue(0);
+    ui->process_Details->setText(QString("任务执行中..."));
     int curRow = 0;
     /*
      * curRow = valid[0,...] invalid[-1]
@@ -159,126 +183,180 @@ void adminwin::on_save_btn_clicked()
     {
         if(ui->detailsTable->item(curRow,0)->text() == "" || ui->detailsTable->item(curRow,1)->text() == "")
         {
-            QSqlQuery query(*DB);
-            query.exec("select username,"
-                       "pwd "
-                       "from logininfo order by curid;");
-            int base_rowCnt = query.size();
-
-            ui->progress_Bar->setMaximum(base_rowCnt - row);
             ui->progress_Bar->setValue(0);
-            ui->process_Details->setText(QString("任务执行中..."));
-
-            for(int i = row;i < base_rowCnt;i++)
-            {
-                ui->progress_Bar->setValue(i - row);
-                query.exec(QString("update logininfo set curid = '%1', "
-                                   "where curid = '%2';")
-                          .arg(i + 2)
-                          .arg(i + 1));
-            }
-
-            insert_index = row;
-            ui->detailsTable->insertRow(row);
-            ui->process_Details->setText(QString("完成"));
-
-            // 需要空行的计数，delete后没事，不空后保存成功没事，空着行保存则报错，delete空行时再将下面的数据base上移
-            QMessageBox::critical(this, "提示", "添加失败，当前行存在空数据！");
+            ui->process_Details->setText(QString("Error:添加失败，当前行存在空数据..."));
             return;
         }
 
         QSqlQuery query(*DB);
-        query.exec("select username,"
-                   "pwd "
-                   "from logininfo order by curid;");
-        int base_rowCnt = query.size();
+        ui->progress_Bar->setValue(1);
 
-        if(curRow + 1 <= base_rowCnt)
+        QString order = QString("update logininfo set username = '%1', "
+                                "pwd = '%2' "
+                                "where curid = '%3';")
+                .arg(ui->detailsTable->item(curRow,0)->text())
+                .arg(ui->detailsTable->item(curRow,1)->text())
+                .arg(curRow);
+        ui->progress_Bar->setValue(2);
+
+        if(query.exec(order))
         {
-            QString order = QString("update logininfo set username = '%1', "
-                                    "pwd = '%2' "
-                                    "where curid = '%3';")
-                    .arg(ui->detailsTable->item(curRow,0)->text())
-                    .arg(ui->detailsTable->item(curRow,1)->text())
-                    .arg(curRow + 1);
-            if(query.exec(order))
-                ui->process_Details->setText(QString("更新成功..."));
-            else
-                ui->process_Details->setText(QString("更新失败..."));
+            ui->progress_Bar->setValue(3);
+            ui->process_Details->setText(QString("更新成功..."));
         }
         else
         {
-            QString insetOrder = QString("insert into logininfo(username,"
-                                         "pwd,curid) "
-                                         "values('%1', '%2', '%3');")
-                    .arg(ui->detailsTable->item(curRow,0)->text())
-                    .arg(ui->detailsTable->item(curRow,1)->text())
-                    .arg(curRow + 1);
-
-            if(query.exec(insetOrder))
-                ui->process_Details->setText(QString("添加成功..."));
-            else
-                ui->process_Details->setText(QString("添加失败..."));
+            ui->progress_Bar->setValue(3);
+            ui->process_Details->setText(QString("更新失败..."));
         }
 
     }
     else
-        QMessageBox::warning(this, "提示", "请选中要修改的条目！");
+    {
+        ui->progress_Bar->setValue(0);
+        ui->process_Details->setText(QString("Warning:请选中要修改的条目..."));
+    }
 
 }
 
 void adminwin::on_add_btn_clicked()
 {
+    ui->progress_Bar->setMaximum(3);
+    ui->progress_Bar->setValue(0);
+    ui->process_Details->setText(QString("任务执行中..."));
     int rowCnt = ui->detailsTable->rowCount();
-    //qDebug() << rowCnt;
 
     if(rowCnt != 0)
     {
-        ui->detailsTable->insertRow(rowCnt);
-        insert_indexs.push_back(rowCnt);
-    }
+        QSqlQuery query(*DB);
+        QString order = QString("insert into logininfo(username,"
+                                "pwd,curid) "
+                                "values('%1', '%2', '%3');")
+                            .arg("")
+                            .arg("")
+                            .arg(rowCnt);
+        ui->progress_Bar->setValue(1);
 
+        bool ok = query.exec(order);
+        ui->progress_Bar->setValue(2);
+        ui->detailsTable->insertRow(rowCnt);
+
+        if(ok)
+        {
+            ui->progress_Bar->setValue(3);
+            ui->process_Details->setText(QString("加入新行成功..."));
+        }
+        else
+        {
+            ui->progress_Bar->setValue(0);
+            ui->process_Details->setText(QString("加入新行失败..."));
+        }
+    }
     else
-        QMessageBox::warning(this, "提示", "当前记录为空，请先加载数据！");
+    {
+        ui->progress_Bar->setValue(0);
+        ui->process_Details->setText(QString("Warning:当前记录为空，请先加载数据..."));
+    }
 
 }
 
 void adminwin::on_insert_btn_clicked()
 {
-    int row = 0;
-    row = ui->detailsTable->currentRow();
-    //qDebug() << row;
+    ui->progress_Bar->setMaximum(3);
+    ui->progress_Bar->setValue(0);
+    ui->process_Details->setText(QString("任务执行中..."));
+    int curRow = ui->detailsTable->currentRow();
 
-    if(row != -1)
+    if(curRow != -1)
     {
+        move_curRow_base(curRow - 1, 1);
+        ui->progress_Bar->setValue(1);
+
         QSqlQuery query(*DB);
-        query.exec("select username,"
-                   "pwd "
-                   "from logininfo order by curid;");
-        int base_rowCnt = query.size();
+        QString order = QString("insert into logininfo(username,"
+                                "pwd,curid) "
+                                "values('%1', '%2', '%3');")
+                            .arg("")
+                            .arg("")
+                            .arg(curRow);
 
-        ui->progress_Bar->setMaximum(base_rowCnt - row);
-        ui->progress_Bar->setValue(0);
-        ui->process_Details->setText(QString("任务执行中..."));
+        bool ok = query.exec(order);
+        ui->progress_Bar->setValue(2);
+        ui->detailsTable->insertRow(curRow);
 
-        for(int i = row;i < base_rowCnt;i++)
+        if(ok)
         {
-            ui->progress_Bar->setValue(i - row);
-            query.exec(QString("update logininfo set curid = '%1', "
-                               "where curid = '%2';")
-                      .arg(i + 2)
-                      .arg(i + 1));
+            ui->progress_Bar->setValue(3);
+            ui->process_Details->setText(QString("插入成功..."));
         }
-
-        insert_insert(row); // 每次插入还要更新它后面的dex数值
-        ui->detailsTable->insertRow(row);
-        ui->process_Details->setText(QString("完成"));
+        else
+        {
+            ui->progress_Bar->setValue(0);
+            ui->process_Details->setText(QString("插入失败..."));
+        }
     }
     else
-        QMessageBox::warning(this, "提示", "当前记录为空，请先加载数据！");
+    {
+        ui->progress_Bar->setValue(0);
+        ui->process_Details->setText(QString("Warning:当前记录为空，请先加载数据..."));
+    }
 }
 
 void adminwin::on_delete_btn_clicked()
 {
     // insert行和blank的插入数据
+    ui->progress_Bar->setMaximum(5);
+    ui->progress_Bar->setValue(0);
+    ui->process_Details->setText(QString("任务执行中..."));
+
+    int curRow = ui->detailsTable->currentRow();
+    ui->progress_Bar->setValue(1);
+
+    if(curRow != -1)
+    {
+        QSqlQuery query(*DB);
+        bool del_ok = query.exec(QString("delete from logininfo "
+                                         "where curid = '%1';")
+                                .arg(curRow));
+
+        ui->progress_Bar->setValue(2);
+
+        if(del_ok)
+        {
+            ui->progress_Bar->setValue(3);
+            move_curRow_base(curRow,-1);
+            ui->progress_Bar->setValue(4);
+
+            ui->detailsTable->removeRow(curRow);
+            ui->progress_Bar->setValue(5);
+            ui->process_Details->setText(QString("删除成功..."));
+        }
+        else
+        {
+            ui->progress_Bar->setValue(0);
+            ui->process_Details->setText(QString("删除失败..."));
+        }
+    }
+    else
+    {
+        ui->progress_Bar->setValue(0);
+        ui->process_Details->setText(QString("Warning:当前记录为空,请先加载数据..."));
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

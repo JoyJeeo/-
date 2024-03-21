@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <vector>
+#include <list>
 using namespace std;
 
 namespace Ui {
@@ -42,13 +43,10 @@ private slots:
 private:
     void triggered();
 
-    bool is_insert(int index);
-    void erase_insert(int index);
-    void insert_insert(int index);
+    void move_curRow_base(int curRow,int step);
 
 private:
     Ui::adminwin *ui;
-    list<int> insert_indexs;
 };
 
 #endif // ADMINWIN_H
