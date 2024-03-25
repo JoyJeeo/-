@@ -55,9 +55,18 @@ void registerwin::on_register_pbtn_clicked()
         }
         else
         {
+            query.exec("select * from logininfo order by curid");
+            int id = -1;
+            for(int i = 0;i < query.size();i++)
+            {
+                query.next();
+                id = query.value(2).toInt();
+            }
+            id++;
+
             sql = QString("insert into logininfo values "
-                          "('%1', '%2');"
-                          ).arg(username).arg(pwd);
+                          "('%1', '%2', '%3');"
+                          ).arg(username).arg(pwd).arg(id);
 
             if(query.exec(sql))
             {
