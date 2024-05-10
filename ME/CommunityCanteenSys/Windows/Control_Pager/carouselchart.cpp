@@ -94,7 +94,7 @@ void CarouselChart::init_labels()
 
 void CarouselChart::init_btns()
 { 
-    QIcon leftIcon(":/image/leftArrow.png");
+    QIcon leftIcon(":/new/prefix1/Image/CarouselChart_ICON/leftArrow.png");
     leftBtn = new QPushButton(leftIcon, "", this);
     leftBtn->move(0, this->size().height() / 2 - 40);
     leftBtn->setMinimumSize(80,80);
@@ -104,7 +104,7 @@ void CarouselChart::init_btns()
                 "QPushButton:pressed{background-color: rgb(255,255,255); border-radius: 40px;border: 1px;}"
                            );
 
-    QIcon rightIcon(":/image/rightArrow.png");
+    QIcon rightIcon(":/new/prefix1/Image/CarouselChart_ICON/rightArrow.png");
     rightBtn = new QPushButton(rightIcon, "", this);
     rightBtn->move(this->size().width() - 80, this->size().height() / 2 - 40);
     rightBtn->setMinimumSize(80,80);

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "Windows\Admin_Paper\adminwin.h "
+#include "Windows/Control_Pager/carouselchart.h"
 
 namespace Ui {
 class controlwin;
@@ -34,6 +35,7 @@ private:
 private:
     Ui::controlwin *ui;
     adminwin *admin_win;
+    CarouselChart *carouselchart;
 };
 
 #endif // CONTROLWIN_H

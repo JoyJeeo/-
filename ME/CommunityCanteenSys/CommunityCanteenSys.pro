@@ -16,8 +16,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Tools/BuyNumBar/buynumbar.cpp \
+    Tools/DishShowBar/dishshowbar.cpp \
+    Tools/DishShowManager/dishshowmanager.cpp \
+    Tools/DishTurnPageBar/dishturnpagebar.cpp \
     Windows\Admin_Paper\adminwin.cpp \
-    carouselchart.cpp \
+    Windows\Control_Pager\carouselchart.cpp \
     Windows\Login_Paper\loginwin.cpp \
     Windows\Control_Pager\controlwin.cpp \
     main.cpp \
@@ -25,14 +29,21 @@ SOURCES += \
     Tools/tool_00_environment.cpp
 
 HEADERS += \
+    Tools/BuyNumBar/buynumbar.h \
+    Tools/DishShowBar/dishshowbar.h \
+    Tools/DishShowManager/dishshowmanager.h \
+    Tools/DishTurnPageBar/dishturnpagebar.h \
     Windows\Admin_Paper\adminwin.h \
-    carouselchart.h \
+    Windows\Control_Pager\carouselchart.h \
     Windows\Login_Paper\loginwin.h \
     Windows\Login_Paper\registerwin.h \
     Tools/tool_00_environment.h \
     Windows\Control_Pager\controlwin.h
 
 FORMS += \
+    Tools/BuyNumBar/buynumbar.ui \
+    Tools/DishShowBar/dishshowbar.ui \
+    Tools/DishTurnPageBar/dishturnpagebar.ui \
     Windows\Login_Paper\loginwin.ui \
     Windows\Login_Paper\registerwin.ui \
     Windows\Control_Pager\controlwin.ui \
@@ -43,4 +54,8 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RC_ICONS = _logo.ico
+RC_ICONS = logo.ico
+
+RESOURCES += \
+    AnnoWin_SRC.qrc \
+    DishPack_SRC.qrc
