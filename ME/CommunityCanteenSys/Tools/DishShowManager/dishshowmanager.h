@@ -19,6 +19,8 @@ public:
     // 查
     DishShowBar* findDish(QString dishName);
 
+    DishShowBar* operator[](int i);
+
     // 容器大小
     int sizeDish();
 

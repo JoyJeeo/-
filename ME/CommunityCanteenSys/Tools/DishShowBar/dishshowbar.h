@@ -13,7 +13,7 @@ class DishShowBar : public QWidget
     Q_OBJECT
 
 public:
-    explicit DishShowBar(QString DishImage,
+    explicit DishShowBar(QString DishImagePath,
                          QString DishName,QString DishMoney,QString DishNum,
                          QWidget *parent = nullptr);
     ~DishShowBar();

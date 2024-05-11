@@ -1,12 +1,12 @@
 #include "dishshowbar.h"
 #include "ui_dishshowbar.h"
 
-DishShowBar::DishShowBar(QString DishPath,
+DishShowBar::DishShowBar(QString DishImagePath,
                          QString DishName, QString DishMoney, QString DishNum,
                          QWidget *parent):
     QWidget(parent),
     ui(new Ui::DishShowBar),
-    DishImage(new QImage(DishPath)),
+    DishImage(new QImage(DishImagePath)),
     DishName(new QString(DishName)),DishMoney(new QString(DishMoney)),DishNum(new QString(DishNum))
 {
     ui->setupUi(this);

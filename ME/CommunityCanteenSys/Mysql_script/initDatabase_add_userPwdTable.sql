@@ -9,3 +9,9 @@ create table loginInfo
 );
  
 insert into loginInfo values('admin','admin','0');
+
+create table userName_userIconPath
+(
+	username varchar(10),
+    userIconPath varchar(1024)
+);

@@ -7,7 +7,6 @@
 #include "Tools/tool_00_environment.h"
 
 
-
 loginwin::loginwin(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::loginwin),

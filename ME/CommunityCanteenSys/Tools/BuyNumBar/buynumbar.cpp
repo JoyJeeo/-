@@ -26,18 +26,24 @@ void BuyNumBar::resetBuyNum()
 
 void BuyNumBar::on_lineEdit_textEdited(const QString &arg1)
 {
-    buynum = arg1.toInt();
+    int t = arg1.toInt();
+
+    buynum = t >= 1 ? t : buynum;
+
+    ui->lineEdit->setText(QString::number(buynum));
 }
 
 
 void BuyNumBar::on_plus_ptn_clicked()
 {
     buynum++;
+
     ui->lineEdit->setText(QString::number(buynum));
 }
 
 void BuyNumBar::on_minus_ptn_clicked()
 {
-    buynum--;
+    buynum = buynum > 1 ? buynum - 1 : 1;
+
     ui->lineEdit->setText(QString::number(buynum));
 }

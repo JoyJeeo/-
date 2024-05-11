@@ -20,6 +20,8 @@ SOURCES += \
     Tools/DishShowBar/dishshowbar.cpp \
     Tools/DishShowManager/dishshowmanager.cpp \
     Tools/DishTurnPageBar/dishturnpagebar.cpp \
+    Tools/MenuAlgorithm/menualgorithm.cpp \
+    Tools/UserIconLabel/usericonlabel.cpp \
     Windows\Admin_Paper\adminwin.cpp \
     Windows\Control_Pager\carouselchart.cpp \
     Windows\Login_Paper\loginwin.cpp \
@@ -33,6 +35,8 @@ HEADERS += \
     Tools/DishShowBar/dishshowbar.h \
     Tools/DishShowManager/dishshowmanager.h \
     Tools/DishTurnPageBar/dishturnpagebar.h \
+    Tools/MenuAlgorithm/menualgorithm.h \
+    Tools/UserIconLabel/usericonlabel.h \
     Windows\Admin_Paper\adminwin.h \
     Windows\Control_Pager\carouselchart.h \
     Windows\Login_Paper\loginwin.h \

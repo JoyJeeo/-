@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "Windows\Admin_Paper\adminwin.h "
 #include "Windows/Control_Pager/carouselchart.h"
+#include "Tools/DishTurnPageBar/dishturnpagebar.h"
 
 namespace Ui {
 class controlwin;
@@ -30,12 +31,20 @@ private:
     void set_user_name(QString name);
 
 private:
+    void getUserIcon();
+    void showUserIcon();
+private slots:
+    void setUserIcon(QString userIconPath);
+
+private:
     QString user_name;
+    QImage *userIcon;
 
 private:
     Ui::controlwin *ui;
     adminwin *admin_win;
     CarouselChart *carouselchart;
+    DishTurnPageBar *dishTurnPageBar;
 };
 
 #endif // CONTROLWIN_H
