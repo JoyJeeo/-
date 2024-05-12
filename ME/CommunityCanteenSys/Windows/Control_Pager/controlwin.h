@@ -39,6 +39,7 @@ private slots:
 private:
     QString user_name;
     QImage *userIcon;
+    QString *userIconPath;
 
 private:
     Ui::controlwin *ui;

@@ -2,12 +2,13 @@
 
 #include <QPropertyAnimation>
 #include <QDebug>
+#include "Tools/tool_00_environment.h"
+#include <QSqlQuery>
 
 static int Timer_time = 5000; // ms
 static int Pic_Smooth_time = 1000; // ms
 
-CarouselChart::CarouselChart(QVector<QString> addPic_path,QWidget *parent) :
-    pics_path(addPic_path),
+CarouselChart::CarouselChart(QWidget *parent) :
     QWidget(parent),
     timer(this->startTimer(Timer_time)),
     animation_group(new QParallelAnimationGroup(this)),
@@ -15,6 +16,18 @@ CarouselChart::CarouselChart(QVector<QString> addPic_path,QWidget *parent) :
     cur_index(0),
     old_index(0)
 {
+    {
+        QSqlQuery query(*DB);
+        QString sql = QString("select * from annoinfo order by AnnoIndex asc;");
+        query.exec(sql);
+
+        while(query.next())
+        {
+            pics_path.push_back(query.value("AnnoImagePath").toString());
+            pics_index.push_back(query.value("AnnoIndex").toString());
+        }
+    }
+
     this->setGeometry(0,0,900,700);
     init_labels();
     init_btns();
@@ -94,7 +107,7 @@ void CarouselChart::init_labels()
 
 void CarouselChart::init_btns()
 { 
-    QIcon leftIcon(":/new/prefix1/Image/CarouselChart_ICON/leftArrow.png");
+    QIcon leftIcon("D:/MyDesktop/Graduation/ME/CommunityCanteenSys/Image/CarouselChart_ICON/leftArrow.png");
     leftBtn = new QPushButton(leftIcon, "", this);
     leftBtn->move(0, this->size().height() / 2 - 40);
     leftBtn->setMinimumSize(80,80);
@@ -104,7 +117,7 @@ void CarouselChart::init_btns()
                 "QPushButton:pressed{background-color: rgb(255,255,255); border-radius: 40px;border: 1px;}"
                            );
 
-    QIcon rightIcon(":/new/prefix1/Image/CarouselChart_ICON/rightArrow.png");
+    QIcon rightIcon("D:/MyDesktop/Graduation/ME/CommunityCanteenSys/Image/CarouselChart_ICON/rightArrow.png");
     rightBtn = new QPushButton(rightIcon, "", this);
     rightBtn->move(this->size().width() - 80, this->size().height() / 2 - 40);
     rightBtn->setMinimumSize(80,80);

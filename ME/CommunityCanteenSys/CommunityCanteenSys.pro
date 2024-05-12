@@ -17,6 +17,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Tools/BuyNumBar/buynumbar.cpp \
+    Tools/DishIconLabel/dishiconlabel.cpp \
+    Tools/DishInfoBar/dishinfobar.cpp \
     Tools/DishShowBar/dishshowbar.cpp \
     Tools/DishShowManager/dishshowmanager.cpp \
     Tools/DishTurnPageBar/dishturnpagebar.cpp \
@@ -32,6 +34,8 @@ SOURCES += \
 
 HEADERS += \
     Tools/BuyNumBar/buynumbar.h \
+    Tools/DishIconLabel/dishiconlabel.h \
+    Tools/DishInfoBar/dishinfobar.h \
     Tools/DishShowBar/dishshowbar.h \
     Tools/DishShowManager/dishshowmanager.h \
     Tools/DishTurnPageBar/dishturnpagebar.h \
@@ -46,6 +50,7 @@ HEADERS += \
 
 FORMS += \
     Tools/BuyNumBar/buynumbar.ui \
+    Tools/DishInfoBar/dishinfobar.ui \
     Tools/DishShowBar/dishshowbar.ui \
     Tools/DishTurnPageBar/dishturnpagebar.ui \
     Windows\Login_Paper\loginwin.ui \
@@ -58,8 +63,6 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RC_ICONS = logo.ico
+RC_ICONS = logo04.ico
 
-RESOURCES += \
-    AnnoWin_SRC.qrc \
-    DishPack_SRC.qrc
+RESOURCES +=

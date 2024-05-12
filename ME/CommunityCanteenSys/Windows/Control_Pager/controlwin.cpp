@@ -8,44 +8,15 @@
 controlwin::controlwin(QWidget *parent) :
     QMainWindow(parent),
     userIcon(nullptr),
+    userIconPath(nullptr),
     ui(new Ui::controlwin),
     admin_win(new adminwin)
 {
     ui->setupUi(this);
     ui->admin_btn->hide();
 
-    QVector<QString> pic_paths = {
-        ":/new/prefix1/Image/AnnoWin_ICON/01.jpg",
-        ":/new/prefix1/Image/AnnoWin_ICON/03.jpg",
-        ":/new/prefix1/Image/AnnoWin_ICON/06.jpg"
-                                 };
-    this->carouselchart = new CarouselChart(pic_paths,ui->AnnoWin);
+    this->carouselchart = new CarouselChart(ui->AnnoWin);
     this->carouselchart->setGeometry(0,0,ui->AnnoWin->width(),ui->AnnoWin->height());
-
-    dishTurnPageBar = new DishTurnPageBar(ui->Anno_Dishes_Area, ui->Anno_Dishes_AreaContents);
-
-    dishTurnPageBar->addDish(new DishShowBar(":/new/prefix1/Image/Dish_ICON/MaPoDouFu.jpg",
-                        "菜名：麻婆豆腐","价格：15元","剩余：100份",ui->Anno_Dishes_AreaContents));
-
-    dishTurnPageBar->addDish(new DishShowBar(":/new/prefix1/Image/Dish_ICON/GanBianDaXia.jpg",
-                        "菜名：干煸大虾","价格：30元","剩余：15份",ui->Anno_Dishes_AreaContents));
-
-    dishTurnPageBar->addDish(new DishShowBar(":/new/prefix1/Image/Dish_ICON/TangCuLiJi.jpg",
-                        "菜名：糖醋里脊","价格：25元","剩余：50份",ui->Anno_Dishes_AreaContents));
-
-    dishTurnPageBar->addDish(new DishShowBar(":/new/prefix1/Image/Dish_ICON/EGanChaoFan.jpg",
-                        "菜名：鹅肝炒饭","价格：11元","剩余：51份",ui->Anno_Dishes_AreaContents));
-
-    dishTurnPageBar->addDish(new DishShowBar(":/new/prefix1/Image/Dish_ICON/MaoCai.jpg",
-                        "菜名：冒菜","价格：14元","剩余：63份",ui->Anno_Dishes_AreaContents));
-
-    dishTurnPageBar->addDish(new DishShowBar(":/new/prefix1/Image/Dish_ICON/TangCuLiYu.jpg",
-                        "菜名：糖醋鲤鱼","价格：45元","剩余：42份",ui->Anno_Dishes_AreaContents));
-
-    dishTurnPageBar->addDish(new DishShowBar(":/new/prefix1/Image/Dish_ICON/TangCuSongShuYu.jpg",
-                        "菜名：糖醋松鼠鱼","价格：65元","剩余：23份",ui->Anno_Dishes_AreaContents));
-
-    dishTurnPageBar->dishShow();
 
     this->setFixedSize(1000,700);
     connect(admin_win,&adminwin::back,this,&controlwin::on_admin_back);
@@ -87,6 +58,12 @@ void controlwin::triggered()
         ui->admin_btn->hide();
     ui->username_label->setText(user_name);
 
+    if(dishTurnPageBar) {delete dishTurnPageBar;dishTurnPageBar = nullptr;}
+    dishTurnPageBar = new DishTurnPageBar(&user_name,
+                                          ui->Anno_Dishes_Area, ui->Anno_Dishes_AreaContents);
+    dishTurnPageBar->dishInitfromDB();
+    dishTurnPageBar->dishShow();
+
     getUserIcon();
     showUserIcon();
 }
@@ -106,7 +83,8 @@ void controlwin::getUserIcon()
 
     if(query.next())
     {
-        this->userIcon = new QImage(query.value("userIconPath").toString());
+        this->userIconPath = new QString(query.value("userIconPath").toString());
+        this->userIcon = new QImage(*this->userIconPath);
         this->userIcon =
                 new QImage(this->userIcon->scaled(220, 220, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     }
@@ -120,7 +98,8 @@ void controlwin::showUserIcon()
 
 void controlwin::setUserIcon(QString userIconPath)
 {
-    this->userIcon = new QImage(userIconPath);
+    this->userIconPath = new QString(userIconPath);
+    this->userIcon = new QImage(*this->userIconPath);
     this->userIcon =
             new QImage(this->userIcon->scaled(220, 220, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 

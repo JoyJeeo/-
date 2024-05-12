@@ -12,34 +12,42 @@ class DishShowBar : public QWidget
 {
     Q_OBJECT
 
+    friend class DishIconLabel;
 public:
-    explicit DishShowBar(QString DishImagePath,
-                         QString DishName,QString DishMoney,QString DishNum,
+    explicit DishShowBar(QString *controlwin_username,QString DishImagePath,
+                         QString DishName,QString DishMoney,QString DishNum,QString DishIndex,
                          QWidget *parent = nullptr);
     ~DishShowBar();
 
-    QImage *getDishImage();
+    QString *getDishImagePath();
     QString *getDishName();
     QString *getDishMoney();
     QString *getDishNum();
+    QString *getDishIndex();
 
-    void setDishImage(QImage *t);
+    void setDishImagePath(QString *t);
     void setDishName(QString *t);
     void setDishMoney(QString *t);
     void setDishNum(QString *t);
+    void setDishIndex(QString *t);
 
 private slots:
     void on_addBuyCar_ptn_clicked();
 
     void on_buyNow_ptn_clicked();
+private:
+    void writeDataToUserBuyCar(int buyNum);
+    void writeDataToUserOrderDetail(int buyNum, int allPay);
 
 private:
     Ui::DishShowBar *ui;
+    QString *controlwin_username;
 
-    QImage *DishImage;
+    QImage *DishImage; QString *DishImagePath;
     QString *DishName;
     QString *DishMoney;
     QString *DishNum;
+    QString *DishIndex; // fromDB
 
     BuyNumBar *buynumbar;
 };

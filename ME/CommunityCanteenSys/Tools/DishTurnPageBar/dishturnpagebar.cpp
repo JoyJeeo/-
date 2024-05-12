@@ -1,10 +1,15 @@
 #include "dishturnpagebar.h"
 #include "ui_dishturnpagebar.h"
+#include "Tools/tool_00_environment.h"
+#include <QSqlQuery>
+#include <QDebug>
 
-DishTurnPageBar::DishTurnPageBar(QScrollArea* scrollArea, QWidget *parent) :
+DishTurnPageBar::DishTurnPageBar(QString *controlwin_username, QScrollArea* scrollArea, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DishTurnPageBar),
-    scrollArea(scrollArea)
+    controlwin_username(controlwin_username),
+    scrollArea(scrollArea),
+    scrollAreaContents(parent)
 {
     ui->setupUi(this);
 }
@@ -34,13 +39,35 @@ int DishTurnPageBar::sizeDish()
     return dishManager.sizeDish();
 }
 
+void DishTurnPageBar::dishInitfromDB()
+{
+    QSqlQuery query(*DB);
+    QString sql = QString("select * from dishesInfo order by DishIndex asc;");
+    query.exec(sql);
+
+    while(query.next())
+    {
+        dishManager.addDish(new DishShowBar(controlwin_username,query.value("DishImagePath").toString(),
+                                            query.value("DishName").toString(),
+                                            query.value("DishMoney").toString(),
+                                            query.value("DishNum").toString(),
+                                            query.value("DishIndex").toString(),this->scrollAreaContents));
+    }
+
+    dishManager.addDish(new DishShowBar(controlwin_username,"","请添加菜品",
+                                        "请添加价格","请添加数量","-1",this->scrollAreaContents));
+}
+
 void DishTurnPageBar::dishShow()
 {
     for(int i = 0;i < dishManager.sizeDish();i++) dishManager[i]->hide();
+//    qDebug() << adminFlag;
+    int validDishSize = *controlwin_username == "admin" ?
+                dishManager.sizeDish() : dishManager.sizeDish() - 1;
 
     int i = curIndex * pageShowNum;
     int margin = (curIndex + 1) * pageShowNum;
-    int valid_margin = (dishManager.sizeDish() < margin ? dishManager.sizeDish() : margin);
+    int valid_margin = (validDishSize < margin ? validDishSize : margin);
 
     for(;i < valid_margin;i++)
     {
