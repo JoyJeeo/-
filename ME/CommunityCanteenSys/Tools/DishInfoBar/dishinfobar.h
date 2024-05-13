@@ -17,8 +17,9 @@ public:
     ~DishInfoBar();
 
 signals:
-    void addSuccess(void);
-    void deleteSuccess(void);
+    void addSuccess();
+    void deleteSuccess(); // 1. dishInfo中对持久层和上层数据同时进行变换后；
+                        // 2. 将变换对应结果传给上层再做进一步处理【链式传递】
 
 private slots:
     void on_dishImagePathSelect_ptn_clicked();

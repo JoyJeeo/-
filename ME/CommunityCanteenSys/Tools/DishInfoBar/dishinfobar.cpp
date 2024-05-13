@@ -115,6 +115,8 @@ void DishInfoBar::on_commit_ptn_clicked()
 
     }
 
+    this->close();
+
 }
 
 void DishInfoBar::on_cancel_ptn_clicked()
@@ -142,6 +144,6 @@ void DishInfoBar::on_deleteDish_ptn_clicked()
         QMessageBox::information(nullptr,"菜品选项卡信息","删除菜品信息成功");
     }
 
-
+    this->close();
 }
 

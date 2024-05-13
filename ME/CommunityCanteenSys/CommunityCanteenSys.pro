@@ -23,7 +23,12 @@ SOURCES += \
     Tools/DishShowManager/dishshowmanager.cpp \
     Tools/DishTurnPageBar/dishturnpagebar.cpp \
     Tools/MenuAlgorithm/menualgorithm.cpp \
+    Tools/OrderDetailTools/DetailBar/detailbar.cpp \
+    Tools/OrderDetailTools/OderDetailBar/oderdetailbar.cpp \
+    Tools/OrderDetailTools/OrderDishShowBar/orderdishshowbar.cpp \
     Tools/UserIconLabel/usericonlabel.cpp \
+    Windows/BuyCar_Pager/buycarwin.cpp \
+    Windows/OrderDetail_Pager/orderdetailwin.cpp \
     Windows\Admin_Paper\adminwin.cpp \
     Windows\Control_Pager\carouselchart.cpp \
     Windows\Login_Paper\loginwin.cpp \
@@ -40,7 +45,12 @@ HEADERS += \
     Tools/DishShowManager/dishshowmanager.h \
     Tools/DishTurnPageBar/dishturnpagebar.h \
     Tools/MenuAlgorithm/menualgorithm.h \
+    Tools/OrderDetailTools/DetailBar/detailbar.h \
+    Tools/OrderDetailTools/OderDetailBar/oderdetailbar.h \
+    Tools/OrderDetailTools/OrderDishShowBar/orderdishshowbar.h \
     Tools/UserIconLabel/usericonlabel.h \
+    Windows/BuyCar_Pager/buycarwin.h \
+    Windows/OrderDetail_Pager/orderdetailwin.h \
     Windows\Admin_Paper\adminwin.h \
     Windows\Control_Pager\carouselchart.h \
     Windows\Login_Paper\loginwin.h \
@@ -53,6 +63,11 @@ FORMS += \
     Tools/DishInfoBar/dishinfobar.ui \
     Tools/DishShowBar/dishshowbar.ui \
     Tools/DishTurnPageBar/dishturnpagebar.ui \
+    Tools/OrderDetailTools/DetailBar/detailbar.ui \
+    Tools/OrderDetailTools/OderDetailBar/oderdetailbar.ui \
+    Tools/OrderDetailTools/OrderDishShowBar/orderdishshowbar.ui \
+    Windows/BuyCar_Pager/buycarwin.ui \
+    Windows/OrderDetail_Pager/orderdetailwin.ui \
     Windows\Login_Paper\loginwin.ui \
     Windows\Login_Paper\registerwin.ui \
     Windows\Control_Pager\controlwin.ui \
@@ -63,6 +78,6 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RC_ICONS = logo04.ico
+RC_ICONS = logo.ico
 
 RESOURCES +=

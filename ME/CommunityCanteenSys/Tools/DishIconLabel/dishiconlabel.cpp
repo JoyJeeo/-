@@ -19,6 +19,8 @@ void DishIconLabel::mousePressEvent(QMouseEvent *ev)
             DishInfoBar *dishInfo = new DishInfoBar(dishShowBar);
             dishInfo->setAttribute(Qt::WA_DeleteOnClose);
             dishInfo->show();
+            connect(dishInfo,&DishInfoBar::addSuccess,[=](){emit this->addSuccess();});
+            connect(dishInfo,&DishInfoBar::deleteSuccess,[=](){emit this->deleteSuccess();});
         }
     }
 }

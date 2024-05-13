@@ -1,9 +1,11 @@
 #include "controlwin.h"
 #include "ui_controlwin.h"
 #include "Tools/DishShowBar/dishshowbar.h"
-#include "Tools/tool_00_environment.h"
 #include "Tools/UserIconLabel/usericonlabel.h"
+#include "Tools/tool_00_environment.h"
 #include <QSqlQuery>
+#include "Windows/BuyCar_Pager/buycarwin.h"
+#include "Windows/OrderDetail_Pager/orderdetailwin.h"
 
 controlwin::controlwin(QWidget *parent) :
     QMainWindow(parent),
@@ -52,14 +54,14 @@ void controlwin::triggered()
     ui->userIcon_label->clear();
     ui->userIcon_label->setText("请设置用户头像");
 
-    if(user_name == "admin")
+    if(*user_name == "admin")
         ui->admin_btn->show();
     else
         ui->admin_btn->hide();
-    ui->username_label->setText(user_name);
+    ui->username_label->setText(*user_name);
 
     if(dishTurnPageBar) {delete dishTurnPageBar;dishTurnPageBar = nullptr;}
-    dishTurnPageBar = new DishTurnPageBar(&user_name,
+    dishTurnPageBar = new DishTurnPageBar(user_name,
                                           ui->Anno_Dishes_Area, ui->Anno_Dishes_AreaContents);
     dishTurnPageBar->dishInitfromDB();
     dishTurnPageBar->dishShow();
@@ -70,7 +72,7 @@ void controlwin::triggered()
 
 void controlwin::set_user_name(QString name)
 {
-    user_name = name;
+    user_name = new QString(name);
 }
 
 void controlwin::getUserIcon()
@@ -78,7 +80,7 @@ void controlwin::getUserIcon()
     QSqlQuery query(*DB);
     QString sql = QString("select * from userName_userIconPath "
                           "where username = '%1';"
-                          ).arg(user_name);
+                          ).arg(*user_name);
     query.exec(sql);
 
     if(query.next())
@@ -107,7 +109,7 @@ void controlwin::setUserIcon(QString userIconPath)
     QSqlQuery query(*DB);
     QString sql = QString("select * from userName_userIconPath "
                           "where username = '%1';"
-                          ).arg(user_name);
+                          ).arg(*user_name);
     query.exec(sql);
 
     bool flag = query.next() ? true : false;
@@ -115,14 +117,58 @@ void controlwin::setUserIcon(QString userIconPath)
     // 修改
     if(flag) sql = QString("update userName_userIconPath set "
                                             "userIconPath = '%1' "
-                                            "where username = '%2';").arg(userIconPath).arg(user_name);
+                                            "where username = '%2';").arg(userIconPath).arg(*user_name);
 
     // 新增
     else sql = QString("insert into userName_userIconPath(username,"
                                         "userIconPath) "
-                                        "values('%1', '%2');").arg(user_name).arg(userIconPath);
+                                        "values('%1', '%2');").arg(*user_name).arg(userIconPath);
 
     query.exec(sql);
 
     showUserIcon();
+}
+
+void controlwin::on_buy_car_btn_clicked()
+{
+    QString buyCarTable = *user_name + "BuyCar";
+
+    QSqlQuery query(*DB);
+    QString sql = QString("create table if not exists %1 "
+                          "(                                      "
+                          "    DishName varchar(50),              "
+                          "    DishMoney varchar(50),             "
+                          "    DishBuyNum varchar(50),            "
+                          "    DishImagePath varchar(1024),       "
+                          "    DishIndex int                      "
+                          ");")
+            .arg(buyCarTable);
+
+    query.exec(sql);
+
+    buycarwin *buyCarWin = new buycarwin();
+    buyCarWin->setAttribute(Qt::WA_DeleteOnClose);
+    buyCarWin->show();
+}
+
+void controlwin::on_order_details_btn_clicked()
+{
+    QString OrderDetailTable = *user_name + "OrderDetail";
+
+    QSqlQuery query(*DB);
+    QString sql = QString("create table if not exists %1    "
+                          "(                                "
+                          "    DishName varchar(50),        "
+                          "    DishMoney varchar(50),       "
+                          "    DishBuyNum varchar(50),      "
+                          "    DishImagePath varchar(1024), "
+                          "    TakeOrderTime datetime       "
+                          ");")
+            .arg(OrderDetailTable);
+
+    query.exec(sql);
+
+    orderdetailwin *orderDetailWin = new orderdetailwin(*user_name);
+    orderDetailWin->setAttribute(Qt::WA_DeleteOnClose);
+    orderDetailWin->show();
 }

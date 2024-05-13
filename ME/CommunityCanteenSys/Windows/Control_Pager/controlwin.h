@@ -36,8 +36,12 @@ private:
 private slots:
     void setUserIcon(QString userIconPath);
 
+    void on_buy_car_btn_clicked();
+
+    void on_order_details_btn_clicked();
+
 private:
-    QString user_name;
+    QString *user_name;
     QImage *userIcon;
     QString *userIconPath;
 

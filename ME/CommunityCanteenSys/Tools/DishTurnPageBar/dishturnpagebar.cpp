@@ -45,17 +45,26 @@ void DishTurnPageBar::dishInitfromDB()
     QString sql = QString("select * from dishesInfo order by DishIndex asc;");
     query.exec(sql);
 
+    DishShowBar *t = nullptr;
     while(query.next())
     {
-        dishManager.addDish(new DishShowBar(controlwin_username,query.value("DishImagePath").toString(),
-                                            query.value("DishName").toString(),
-                                            query.value("DishMoney").toString(),
-                                            query.value("DishNum").toString(),
-                                            query.value("DishIndex").toString(),this->scrollAreaContents));
-    }
+        t = new DishShowBar(controlwin_username,query.value("DishImagePath").toString(),
+                            query.value("DishName").toString(),
+                            query.value("DishMoney").toString(),
+                            query.value("DishNum").toString(),
+                            query.value("DishIndex").toString(),this->scrollAreaContents);
 
-    dishManager.addDish(new DishShowBar(controlwin_username,"","请添加菜品",
-                                        "请添加价格","请添加数量","-1",this->scrollAreaContents));
+        // 同一个类型的对象，发送相同的信号，但不同的对象，选择性的对信号进行链接
+        connect(t,&DishShowBar::deleteSuccess,this,&DishTurnPageBar::slot_deleteDishShowBarSuccess);
+
+        dishManager.addDish(t);
+    }
+    t = new DishShowBar(controlwin_username,"","请添加菜品",
+                        "请添加价格","请添加数量","-1",this->scrollAreaContents);
+    connect(t,&DishShowBar::addSuccess,this,&DishTurnPageBar::slot_addDishShowBarSuccess);
+
+    dishManager.addDish(t);
+    t = nullptr;
 }
 
 void DishTurnPageBar::dishShow()
@@ -131,5 +140,25 @@ void DishTurnPageBar::on_pageIndex_lineEdit_textChanged(const QString &arg1)
 
     curIndex = t_index - 1;
     // 展示
+    dishShow();
+}
+
+void DishTurnPageBar::slot_addDishShowBarSuccess(DishShowBar* self)
+{
+    disconnect(self,&DishShowBar::addSuccess,this,&DishTurnPageBar::slot_addDishShowBarSuccess);
+    connect(self,&DishShowBar::deleteSuccess,this,&DishTurnPageBar::slot_deleteDishShowBarSuccess);
+
+    DishShowBar *t = new DishShowBar(controlwin_username,"","请添加菜品",
+                        "请添加价格","请添加数量","-1",this->scrollAreaContents);
+    connect(t,&DishShowBar::addSuccess,this,&DishTurnPageBar::slot_addDishShowBarSuccess);
+
+    dishManager.addDish(t);
+    t = nullptr;
+    dishShow();
+}
+
+void DishTurnPageBar::slot_deleteDishShowBarSuccess(DishShowBar* self)
+{
+    dishManager.deleteDish(*self->getDishName());
     dishShow();
 }

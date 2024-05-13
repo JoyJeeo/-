@@ -43,6 +43,9 @@ private slots:
 
     void on_pageIndex_lineEdit_textChanged(const QString &arg1);
 
+    void slot_addDishShowBarSuccess(DishShowBar* self);
+    void slot_deleteDishShowBarSuccess(DishShowBar* self);
+
 private:
     Ui::DishTurnPageBar *ui;
 

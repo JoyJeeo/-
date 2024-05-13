@@ -12,6 +12,8 @@ public:
     explicit DishIconLabel(QWidget *parent = nullptr);
 
 signals:
+    void addSuccess();
+    void deleteSuccess();
 
 protected:
     void mousePressEvent(QMouseEvent *ev) override;

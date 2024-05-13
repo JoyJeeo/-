@@ -31,13 +31,17 @@ public:
     void setDishNum(QString *t);
     void setDishIndex(QString *t);
 
+signals:
+    void addSuccess(DishShowBar *self);
+    void deleteSuccess(DishShowBar *self);
+
 private slots:
     void on_addBuyCar_ptn_clicked();
 
     void on_buyNow_ptn_clicked();
 private:
     void writeDataToUserBuyCar(int buyNum);
-    void writeDataToUserOrderDetail(int buyNum, int allPay);
+    void writeDataToUserOrderDetail(int buyNum);
 
 private:
     Ui::DishShowBar *ui;

@@ -5,7 +5,7 @@ create table loginInfo
 (
 	username varchar(10),
     pwd varchar(20),
-    curid varchar(20)
+    curid int
 );
  
 insert into loginInfo values('admin','admin','0');
@@ -22,11 +22,32 @@ create table dishesInfo
     DishMoney varchar(50),
     DishNum varchar(50),
     DishImagePath varchar(1024),
-    DishIndex varchar(50)
+    DishIndex int
 );
 
 create table AnnoInfo
 (
     AnnoImagePath varchar(1024),
-	AnnoIndex varchar(50)
+	AnnoIndex int
 );
+
+create table if not exists adminBuyCar
+(
+	DishName varchar(50),
+    DishMoney varchar(50),
+    DishBuyNum varchar(50),
+	DishImagePath varchar(1024),
+	DishIndex int -- 排序时必须以数字排序，而不是字符串
+);
+
+create table if not exists adminOrderDetail
+(
+	DishName varchar(50),
+    DishMoney varchar(50),
+    DishBuyNum varchar(50),
+	DishImagePath varchar(1024),
+    TakeOrderTime datetime
+);
+
+
+
