@@ -169,19 +169,21 @@ void DishShowBar::on_buyNow_ptn_clicked()
         // 立即购买 输出购买信息和付款方式
         QString text = "%1\n%2\n购买：%3份\n需支付：%4元";
         text = text.arg(*DishName).arg(*DishMoney).arg(buyNum).arg(dishMoney * buyNum);
-        QImage *paypal = new QImage("D:/MyDesktop/Graduation/ME/CommunityCanteenSys/Image/PayPal/Paying.jpg");
-        QWidget *w = new QWidget;
-        QVBoxLayout *layout = new QVBoxLayout; // 在布局中添加控件，最后将布局添加到窗体中
-        QLabel *label = new QLabel();
-        label->setPixmap(QPixmap::fromImage(*paypal));
-        layout->addWidget(label);
-        w->setLayout(layout);
-        w->move(0,0);
-        w->show();
         int check = QMessageBox::information(nullptr,"立即购买信息",text,QMessageBox::Ok | QMessageBox::Close);
 
         if(check == QMessageBox::Ok)
         {
+            // 付款界面
+            QImage *paypal = new QImage("D:/MyDesktop/Graduation/ME/CommunityCanteenSys/Image/PayPal/Paying.jpg");
+            QDialog *w = new QDialog;
+            QVBoxLayout *layout = new QVBoxLayout; // 在布局中添加控件，最后将布局添加到窗体中
+            QLabel *label = new QLabel();
+            label->setPixmap(QPixmap::fromImage(*paypal));
+            layout->addWidget(label);
+            w->setLayout(layout);
+            w->move(0,0);
+            w->exec();
+
             // 更改菜品数据库信息
             int newDishNum =  oldDishNum - buyNum;
             *DishNum = MenuAlgorithm::replaceQStringByFirstNum(*DishNum,newDishNum);

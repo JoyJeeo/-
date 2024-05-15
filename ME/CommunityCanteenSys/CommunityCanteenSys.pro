@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Tools/BuyCarTools/BuyCarDishShowBar/buycardishshowbar.cpp \
     Tools/BuyNumBar/buynumbar.cpp \
     Tools/DishIconLabel/dishiconlabel.cpp \
     Tools/DishInfoBar/dishinfobar.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
     Tools/tool_00_environment.cpp
 
 HEADERS += \
+    Tools/BuyCarTools/BuyCarDishShowBar/buycardishshowbar.h \
     Tools/BuyNumBar/buynumbar.h \
     Tools/DishIconLabel/dishiconlabel.h \
     Tools/DishInfoBar/dishinfobar.h \
@@ -59,6 +61,7 @@ HEADERS += \
     Windows\Control_Pager\controlwin.h
 
 FORMS += \
+    Tools/BuyCarTools/BuyCarDishShowBar/buycardishshowbar.ui \
     Tools/BuyNumBar/buynumbar.ui \
     Tools/DishInfoBar/dishinfobar.ui \
     Tools/DishShowBar/dishshowbar.ui \

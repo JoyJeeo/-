@@ -1,4 +1,6 @@
 #include "menualgorithm.h"
+#include <QBitmap>
+#include <QPainter>
 
 int MenuAlgorithm::KMPSearch(QString s, QString cmp)
 {
@@ -68,6 +70,56 @@ QString MenuAlgorithm::replaceQStringByFirstNum(QString str, int newNum)
 
     return pre_str + QString::number(newNum) + post_str;
 }
+
+QPixmap MenuAlgorithm::PixmapToRound(const QPixmap &srcPixmap, const int &radius, const int &width, const int &height)
+{
+    // 目标图片尺寸
+       QSize desSize(width, height);
+
+       // 新建一个目标大小的画布Qpixmap
+       QPixmap desPixMap(desSize);
+       // 填充透明色作为背景
+       desPixMap.fill(Qt::transparent);
+
+       //以QPixmap 为绘画背景进行画笔绘制
+       QPainter painter(&desPixMap);
+       painter.setRenderHints(QPainter::Antialiasing); //抗锯齿
+       painter.setRenderHints(QPainter::SmoothPixmapTransform); //平滑像素图变换
+
+       QPainterPath path;//绘制路径
+       //绘制圆角矩形，其中最后两个参数值的范围为（0-99），就是圆角的px值
+       path.addRoundedRect(0, 0, desSize.width(), desSize.height(), radius, radius);
+
+       // 将绘制的圆角矩形路径中内容进行裁剪
+       painter.setClipPath(path);
+
+       //将图片绘制到desPixmap中，IgnoreAspectRatio忽视图片比例
+       painter.drawPixmap(0, 0, desSize.width(), desSize.height(), srcPixmap.scaled(desSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
+       painter.setClipping(false); // 关闭裁剪
+
+       return desPixMap;
+}
+
+//QPixmap MenuAlgorithm::PixmapToRound(QPixmap &src, int radius)
+//{
+//    if (src.isNull()) {
+//        return QPixmap();
+//    }
+
+//    QSize size(2 * radius, 2 * radius);
+//    QBitmap mask(size);
+//    QPainter painter(&mask);
+//    painter.setRenderHint(QPainter::Antialiasing);
+//    painter.setRenderHint(QPainter::SmoothPixmapTransform);
+//    painter.fillRect(0, 0, size.width(), size.height(), Qt::white);
+//    painter.setBrush(QColor(0, 0, 0));
+//    painter.drawRoundedRect(0, 0, size.width(), size.height(), 99, 99);
+
+//    QPixmap image = src.scaled(size);
+//    image.setMask(mask);
+//    return image;
+//}
 
 QVector<int> MenuAlgorithm::get_kmp(QString cmp)
 {

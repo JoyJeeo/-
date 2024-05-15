@@ -6,6 +6,9 @@
 #include <QSqlQuery>
 #include "Windows/BuyCar_Pager/buycarwin.h"
 #include "Windows/OrderDetail_Pager/orderdetailwin.h"
+#include <QDebug>
+#include <QDialog>
+#include <QMessageBox>
 
 controlwin::controlwin(QWidget *parent) :
     QMainWindow(parent),
@@ -65,6 +68,8 @@ void controlwin::triggered()
                                           ui->Anno_Dishes_Area, ui->Anno_Dishes_AreaContents);
     dishTurnPageBar->dishInitfromDB();
     dishTurnPageBar->dishShow();
+
+    this->setWindowTitle(*user_name);
 
     getUserIcon();
     showUserIcon();
@@ -146,8 +151,9 @@ void controlwin::on_buy_car_btn_clicked()
 
     query.exec(sql);
 
-    buycarwin *buyCarWin = new buycarwin();
+    buycarwin *buyCarWin = new buycarwin(*user_name); // 继承关系
     buyCarWin->setAttribute(Qt::WA_DeleteOnClose);
+//    buyCarWin->setWindowModality(Qt::WindowModality());
     buyCarWin->show();
 }
 
@@ -168,7 +174,9 @@ void controlwin::on_order_details_btn_clicked()
 
     query.exec(sql);
 
-    orderdetailwin *orderDetailWin = new orderdetailwin(*user_name);
+    orderdetailwin *orderDetailWin = new orderdetailwin(*user_name); // 继承关系
     orderDetailWin->setAttribute(Qt::WA_DeleteOnClose);
+//    orderDetailWin->setWindowModality(Qt::WindowModality());
+//    orderDetailWin->setWin
     orderDetailWin->show();
 }

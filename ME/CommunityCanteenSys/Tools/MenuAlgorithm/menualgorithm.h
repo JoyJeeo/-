@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QVector>
+#include <QPixmap>
 
 class MenuAlgorithm
 {
@@ -15,6 +16,9 @@ public:
 
     // replaceQStringByFirstNum对QString的unicode汉字中第一个完整的数字进行替换
     static QString replaceQStringByFirstNum(QString str,int newNum);
+
+    //
+    static QPixmap PixmapToRound(const QPixmap &srcPixmap, const int &radius, const int &width, const int &height);
 
 private:
     MenuAlgorithm();
