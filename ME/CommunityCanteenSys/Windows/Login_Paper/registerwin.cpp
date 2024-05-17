@@ -17,7 +17,7 @@ registerwin::registerwin(QWidget *parent) :
 
 registerwin::~registerwin()
 {
-    DELETE(ui);
+    delete ui;
 }
 
 void registerwin::keyPressEvent(QKeyEvent *event)

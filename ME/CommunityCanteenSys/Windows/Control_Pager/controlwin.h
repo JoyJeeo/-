@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include "Windows\Admin_Paper\adminwin.h "
-#include "Windows/Control_Pager/carouselchart.h"
+#include "Tools/CarouselChart/carouselchart.h"
 #include "Tools/DishTurnPageBar/dishturnpagebar.h"
 
 namespace Ui {
@@ -23,7 +23,7 @@ signals:
 
 private slots:
     void on_back_login_btn_clicked();
-    void on_admin_back();
+    void on_admin_back(adminwin* t);
     void on_admin_btn_clicked();
 
 private:
@@ -31,7 +31,6 @@ private:
     void set_user_name(QString name);
 
 private:
-    void getUserIcon();
     void showUserIcon();
 private slots:
     void setUserIcon(QString userIconPath);
@@ -42,12 +41,9 @@ private slots:
 
 private:
     QString *user_name;
-    QImage *userIcon;
-    QString *userIconPath;
 
 private:
     Ui::controlwin *ui;
-    adminwin *admin_win;
     CarouselChart *carouselchart;
     DishTurnPageBar *dishTurnPageBar;
 };

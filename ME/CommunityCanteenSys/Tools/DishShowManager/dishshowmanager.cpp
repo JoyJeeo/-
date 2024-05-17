@@ -1,5 +1,6 @@
 #include "dishshowmanager.h"
 #include "Tools/MenuAlgorithm/menualgorithm.h"
+#include <QDebug>
 
 DishShowManager::DishShowManager()
 {
@@ -9,7 +10,13 @@ DishShowManager::DishShowManager()
 DishShowManager::~DishShowManager()
 {
     for(int i = 0;i < dishShowes.size();i++)
-        DELETE(dishShowes[i]);
+    {
+        if(dishShowes[i])
+        {
+            delete dishShowes[i];
+            dishShowes[i] = nullptr;
+        }
+    }
 }
 
 bool DishShowManager::addDish(DishShowBar *t)
@@ -28,7 +35,11 @@ bool DishShowManager::deleteDish(QString dishName)
     {
         if(MenuAlgorithm::KMPSearch(*dishShowes[i]->getDishName(), dishName) != -1)
         {
-            DELETE(dishShowes[i]);
+            if(dishShowes[i])
+            {
+                delete dishShowes[i];
+                dishShowes[i] = nullptr;
+            }
             dishShowes.remove(i);
             return true;
         }

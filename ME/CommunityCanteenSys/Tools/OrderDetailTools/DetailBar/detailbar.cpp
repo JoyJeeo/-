@@ -14,6 +14,7 @@ DetailBar::DetailBar(QString winTitle,
     takeOrderTime(takeOrderTime)
 {
     ui->setupUi(this);
+    this->setFixedSize(this->size());
 
     this->setWindowTitle(controlwin_username + "的" + winTitle);
     ui->winTitle->setText(winTitle);
@@ -25,6 +26,14 @@ DetailBar::DetailBar(QString winTitle,
 DetailBar::~DetailBar()
 {
     delete ui;
+    for(int i = 0;i < dishDetails.size();i++)
+    {
+        if(dishDetails[i])
+        {
+            delete dishDetails[i];
+            dishDetails[i] = nullptr;
+        }
+    }
 }
 
 void DetailBar::on_ok_ptn_clicked()
@@ -70,16 +79,16 @@ void DetailBar::orderDishDetailDataInitACalFromDB()
 
 void DetailBar::detailShow()
 {
-    int x = 20,y = 10;
-    int dx = 240, dy = 300;
+    int x = 30,y = 10;
+    int dx = 170, dy = 200;
 
     for(int i = 0;i < dishDetails.size();i++)
     {
-        dishDetails[i]->move(x + dx * (i % 3), y + dy * (i / 3));
+        dishDetails[i]->move(x + dx * (i % 4), y + dy * (i / 4));
     }
 
     // 重置content的高度，产生滚动条
-    int realHeight = y + (dishDetails.size() / 3 + 1) * dy;
+    int realHeight = y + (dishDetails.size() / 4 + 1) * dy;
     if(realHeight > ui->scrollAreaContents->height())
         ui->scrollAreaContents->setMinimumHeight(realHeight);
 }

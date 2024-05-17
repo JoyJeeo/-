@@ -10,36 +10,36 @@ static int Pic_Smooth_time = 1000; // ms
 
 CarouselChart::CarouselChart(QWidget *parent) :
     QWidget(parent),
+    leftBtn(nullptr),
+    rightBtn(nullptr),
     timer(this->startTimer(Timer_time)),
-    animation_group(new QParallelAnimationGroup(this)),
     animationIsRunning(false),
     cur_index(0),
     old_index(0)
 {
-    {
-        QSqlQuery query(*DB);
-        QString sql = QString("select * from annoinfo order by AnnoIndex asc;");
-        query.exec(sql);
+    this->setGeometry(0,0,parent->size().width(),parent->size().height());
 
-        while(query.next())
-        {
-            pics_path.push_back(query.value("AnnoImagePath").toString());
-            pics_index.push_back(query.value("AnnoIndex").toString());
-        }
-    }
-
-    this->setGeometry(0,0,900,700);
-    init_labels();
+    carouseInitFromDB();
     init_btns();
 
     connect(leftBtn,&QPushButton::clicked,this,&CarouselChart::on_leftBtn_clicked);
     connect(rightBtn,&QPushButton::clicked,this,&CarouselChart::on_rightBtn_clicked);
-    connect(animation_group,&QParallelAnimationGroup::stateChanged,this,&CarouselChart::on_animationState);
+    connect(&animation_group,&QParallelAnimationGroup::stateChanged,this,&CarouselChart::on_animationState);
 }
 
 CarouselChart::~CarouselChart()
 {
+    if(leftBtn) delete leftBtn;leftBtn = nullptr;
+    if(rightBtn) delete rightBtn; rightBtn = nullptr;
 
+    for(int i = 0;i < labels.size();i++)
+    {
+        if(labels[i])
+        {
+            delete labels[i];
+            labels[i] = nullptr;
+        }
+    }
 }
 
 void CarouselChart::timerEvent(QTimerEvent *ev)
@@ -68,7 +68,7 @@ void CarouselChart::on_rightBtn_clicked()
 void CarouselChart::on_animationState() // 动画组每次start的开始和结束都会发送信号，我让他调用这个函数
 {
     // 【动画组第一次运行都是Running状态，只有clear后才回重新开始Running；如果不clear，则加载动画start后，每次都是Stop】
-     QAbstractAnimation::State state = animation_group->state(); // 获取并行动画组当前的运行状态
+     QAbstractAnimation::State state = animation_group.state(); // 获取并行动画组当前的运行状态
 //     qDebug() << state;
      if(state == QAbstractAnimation::Running)
      {
@@ -76,56 +76,72 @@ void CarouselChart::on_animationState() // 动画组每次start的开始和结�
      }
      else if(state == QAbstractAnimation::Stopped)
      {
-        animation_group->clear(); // 清空动画组 重新开始 【会释放掉动画组中new出来的所有对象】
+        animation_group.clear(); // 清空动画组 重新开始 【会释放掉动画组中new出来的所有对象】
         labels[old_index]->hide(); // 在动画运行结束后，再将图片隐藏，防止图片叠加【必须依赖动画信号最后来隐藏之前的图片】
         animationIsRunning = false;
      }
+}
+
+void CarouselChart::on_start()
+{
+    animationIsRunning = true;
+}
+
+void CarouselChart::on_end()
+{
+    animationIsRunning = false;
 }
 
 void CarouselChart::paintEvent(QPaintEvent *event) // 重绘label【label不会随着widget大小变化一起绘制】
 {
     labels[cur_index]->resize(this->size());
 
-    leftBtn->move(0, this->size().height() / 2 - 40);
-    rightBtn->move(this->size().width() - 80, this->size().height() / 2 - 40);
+    leftBtn->move(0, this->size().height() / 2 - Dradius / 2);
+    rightBtn->move(this->size().width() - Dradius, this->size().height() / 2 - Dradius / 2);
 
 }
 
-void CarouselChart::init_labels()
+void CarouselChart::carouseInitFromDB()
 {
-    for(int i = 0;i < pics_path.size();i++)
-    {
-        QLabel* label = new QLabel(this);
-        label->setPixmap(QPixmap(pics_path[i])); // label添加图片
-        label->setScaledContents(true); // 设置标签为可扩展内容，才能够设置标签的大小可变
-        label->resize(this->size()); // 设置label的大小与widget一样
-        if(i != cur_index) label->hide();
+    QSqlQuery query(*DB);
+    QString sql = QString("select * from annoinfo order by AnnoIndex asc;");
+    query.exec(sql);
 
-        labels << label;
+    while(query.next())
+    {
+        CarouselChartBar *t = new CarouselChartBar(query.value("AnnoImagePath").toString(),
+                             query.value("AnnoIndex").toString(),this);
+
+        connect(t,&CarouselChartBar::selectStart,this,&CarouselChart::on_start);
+        connect(t,&CarouselChartBar::selectEnd,this,&CarouselChart::on_end);
+        labels << t;
     }
+
+    if(labels.size() > 0) labels[0]->show();
+
 }
 
 void CarouselChart::init_btns()
-{ 
+{
     QIcon leftIcon("D:/MyDesktop/Graduation/ME/CommunityCanteenSys/Image/CarouselChart_ICON/leftArrow.png");
     leftBtn = new QPushButton(leftIcon, "", this);
-    leftBtn->move(0, this->size().height() / 2 - 40);
-    leftBtn->setMinimumSize(80,80);
+    leftBtn->move(0, this->size().height() / 2 - Dradius / 2);
+    leftBtn->setMinimumSize(Dradius,Dradius);
     leftBtn->setStyleSheet(
-                "QPushButton{background-color: rgb(178,180,164,40%);  border-radius: 40px;border: 1px;}"
-                "QPushButton:hover{background-color: gray; border-radius: 40px;border: 1px;}"
-                "QPushButton:pressed{background-color: rgb(255,255,255); border-radius: 40px;border: 1px;}"
-                           );
+                QString("QPushButton{background-color: rgb(178,180,164,40%);  border-radius: %1px;border: 1px;}"
+                "QPushButton:hover{background-color: gray; border-radius: %1px;border: 1px;}"
+                "QPushButton:pressed{background-color: rgb(255,255,255); border-radius: %1px;border: 1px;}")
+                           .arg(Dradius / 2));
 
     QIcon rightIcon("D:/MyDesktop/Graduation/ME/CommunityCanteenSys/Image/CarouselChart_ICON/rightArrow.png");
     rightBtn = new QPushButton(rightIcon, "", this);
-    rightBtn->move(this->size().width() - 80, this->size().height() / 2 - 40);
-    rightBtn->setMinimumSize(80,80);
+    rightBtn->move(this->size().width() - Dradius, this->size().height() / 2 - Dradius / 2);
+    rightBtn->setMinimumSize(Dradius,Dradius);
     rightBtn->setStyleSheet(
-                "QPushButton{background-color: rgb(178,180,164,40%);  border-radius: 40px;border: 1px;}"
-                "QPushButton:hover{background-color: gray; border-radius: 40px;border: 1px;}"
-                "QPushButton:pressed{background-color: rgb(255,255,255); border-radius: 40px;border: 1px;}"
-                            );
+                QString("QPushButton{background-color: rgb(178,180,164,40%);  border-radius: %1px;border: 1px;}"
+                "QPushButton:hover{background-color: gray; border-radius: %1px;border: 1px;}"
+                "QPushButton:pressed{background-color: rgb(255,255,255); border-radius: %1px;border: 1px;}")
+                            .arg(Dradius / 2));
 }
 
 void CarouselChart::imageOrderMove(CarouselChart::DIRECTION direction)
@@ -170,11 +186,11 @@ void CarouselChart::imageOrderMove(CarouselChart::DIRECTION direction)
     labels[cur_index]->show();
 
     // 将设置好的两个控件的动画加入并行动画组，让他们一起展示
-    animation_group->addAnimation(animation_old);
-    animation_group->addAnimation(animation_new);
+    animation_group.addAnimation(animation_old);
+    animation_group.addAnimation(animation_new);
 
-    animation_group->setDirection(QAbstractAnimation::Forward);
-    animation_group->start(); // 开始并行执行加载的动画
+    animation_group.setDirection(QAbstractAnimation::Forward);
+    animation_group.start(); // 开始并行执行加载的动画
 }
 
 void CarouselChart::resetTimer()

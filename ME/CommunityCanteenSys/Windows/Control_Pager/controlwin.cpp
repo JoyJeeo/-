@@ -12,25 +12,31 @@
 
 controlwin::controlwin(QWidget *parent) :
     QMainWindow(parent),
-    userIcon(nullptr),
-    userIconPath(nullptr),
+    user_name(nullptr),
     ui(new Ui::controlwin),
-    admin_win(new adminwin)
+    carouselchart(nullptr),
+    dishTurnPageBar(nullptr)
 {
     ui->setupUi(this);
     ui->admin_btn->hide();
 
+    dishTurnPageBar = new DishTurnPageBar(&user_name,
+                    ui->Anno_Dishes_Area, ui->Anno_Dishes_AreaContents); // ui必须先构造到窗口上
+    dishTurnPageBar->dishInitfromDB();
+
     this->carouselchart = new CarouselChart(ui->AnnoWin);
-    this->carouselchart->setGeometry(0,0,ui->AnnoWin->width(),ui->AnnoWin->height());
 
     this->setFixedSize(1000,700);
-    connect(admin_win,&adminwin::back,this,&controlwin::on_admin_back);
     connect(ui->userIcon_label,&UserIconLabel::back,this,&controlwin::setUserIcon);
 }
 
 controlwin::~controlwin()
 {
     delete ui;
+    if(user_name) {delete user_name; user_name = nullptr;}
+    if(carouselchart) {delete carouselchart; carouselchart = nullptr;}
+    if(dishTurnPageBar) {delete dishTurnPageBar; dishTurnPageBar = nullptr;}
+
 }
 
 void controlwin::on_back_login_btn_clicked()
@@ -39,14 +45,17 @@ void controlwin::on_back_login_btn_clicked()
     emit back_login_paper();
 }
 
-void controlwin::on_admin_back()
+void controlwin::on_admin_back(adminwin *t)
 {
-    admin_win->hide();
+    t->hide();
     this->show();
+    if(t) delete t; t = nullptr;
 }
 
 void controlwin::on_admin_btn_clicked()
 {
+    adminwin *admin_win = new adminwin;
+    connect(admin_win,&adminwin::back,this,&controlwin::on_admin_back);
     this->hide();
     admin_win->triggered();
     admin_win->show();
@@ -57,30 +66,23 @@ void controlwin::triggered()
     ui->userIcon_label->clear();
     ui->userIcon_label->setText("请设置用户头像");
 
-    if(*user_name == "admin")
-        ui->admin_btn->show();
-    else
-        ui->admin_btn->hide();
+    *user_name == "admin" ? ui->admin_btn->show() : ui->admin_btn->hide();
     ui->username_label->setText(*user_name);
 
-    if(dishTurnPageBar) {delete dishTurnPageBar;dishTurnPageBar = nullptr;}
-    dishTurnPageBar = new DishTurnPageBar(user_name,
-                                          ui->Anno_Dishes_Area, ui->Anno_Dishes_AreaContents);
-    dishTurnPageBar->dishInitfromDB();
+    dishTurnPageBar->setCurIndex(0);
     dishTurnPageBar->dishShow();
-
     this->setWindowTitle(*user_name);
 
-    getUserIcon();
     showUserIcon();
 }
 
 void controlwin::set_user_name(QString name)
 {
+    if(user_name) {delete user_name; user_name = nullptr;}
     user_name = new QString(name);
 }
 
-void controlwin::getUserIcon()
+void controlwin::showUserIcon()
 {
     QSqlQuery query(*DB);
     QString sql = QString("select * from userName_userIconPath "
@@ -88,27 +90,20 @@ void controlwin::getUserIcon()
                           ).arg(*user_name);
     query.exec(sql);
 
+    QImage *userIcon = nullptr;
     if(query.next())
     {
-        this->userIconPath = new QString(query.value("userIconPath").toString());
-        this->userIcon = new QImage(*this->userIconPath);
-        this->userIcon =
-                new QImage(this->userIcon->scaled(220, 220, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        userIcon = new QImage(query.value("userIconPath").toString());
+        userIcon = new QImage(userIcon->scaled(220, 220, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        ui->userIcon_label->setPixmap(QPixmap::fromImage(*userIcon));
     }
-    else userIcon = nullptr;
-}
-
-void controlwin::showUserIcon()
-{
-    if(this->userIcon) ui->userIcon_label->setPixmap(QPixmap::fromImage(*this->userIcon));
 }
 
 void controlwin::setUserIcon(QString userIconPath)
 {
-    this->userIconPath = new QString(userIconPath);
-    this->userIcon = new QImage(*this->userIconPath);
-    this->userIcon =
-            new QImage(this->userIcon->scaled(220, 220, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    QImage *userIcon = nullptr;
+    userIcon = new QImage(userIconPath);
+    userIcon = new QImage(userIcon->scaled(220, 220, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
     // 加入变动
     QSqlQuery query(*DB);
@@ -125,8 +120,7 @@ void controlwin::setUserIcon(QString userIconPath)
                                             "where username = '%2';").arg(userIconPath).arg(*user_name);
 
     // 新增
-    else sql = QString("insert into userName_userIconPath(username,"
-                                        "userIconPath) "
+    else sql = QString("insert into userName_userIconPath "
                                         "values('%1', '%2');").arg(*user_name).arg(userIconPath);
 
     query.exec(sql);
@@ -153,7 +147,7 @@ void controlwin::on_buy_car_btn_clicked()
 
     buycarwin *buyCarWin = new buycarwin(*user_name); // 继承关系
     buyCarWin->setAttribute(Qt::WA_DeleteOnClose);
-//    buyCarWin->setWindowModality(Qt::WindowModality());
+    buyCarWin->setWindowModality(Qt::ApplicationModal);
     buyCarWin->show();
 }
 
@@ -176,7 +170,6 @@ void controlwin::on_order_details_btn_clicked()
 
     orderdetailwin *orderDetailWin = new orderdetailwin(*user_name); // 继承关系
     orderDetailWin->setAttribute(Qt::WA_DeleteOnClose);
-//    orderDetailWin->setWindowModality(Qt::WindowModality());
-//    orderDetailWin->setWin
+    orderDetailWin->setWindowModality(Qt::ApplicationModal);
     orderDetailWin->show();
 }

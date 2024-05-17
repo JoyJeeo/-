@@ -1,5 +1,4 @@
 #include "Windows\Login_Paper\loginwin.h"
-#include "Tools/DishShowBar/dishshowbar.h"
 
 #include <QApplication>
 #include <QDebug>

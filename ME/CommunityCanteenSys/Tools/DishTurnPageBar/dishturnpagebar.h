@@ -16,7 +16,7 @@ class DishTurnPageBar : public QWidget
     Q_OBJECT
 
 public:
-    explicit DishTurnPageBar(QString *controlwin_username, QScrollArea* scrollArea, QWidget *parent = nullptr);
+    explicit DishTurnPageBar(QString **controlwin_username, QScrollArea* scrollArea, QWidget *parent = nullptr);
     ~DishTurnPageBar();
 
     // 增
@@ -32,6 +32,9 @@ public:
     void dishInitfromDB();
 
     void dishShow();
+
+    int getCurIndex();
+    void setCurIndex(int index);
 
 
 private slots:
@@ -49,7 +52,7 @@ private slots:
 private:
     Ui::DishTurnPageBar *ui;
 
-    QString *controlwin_username;
+    QString **controlwin_username;
 
     QScrollArea* scrollArea;
     QWidget* scrollAreaContents;

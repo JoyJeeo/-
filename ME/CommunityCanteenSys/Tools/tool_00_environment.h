@@ -17,8 +17,8 @@ public:
     QSqlDatabase *mysql_db;
 };
 
-extern Environment ev;
-#define EV ev
+extern Environment ve_ev;
+#define EV ve_ev
 #define DB EV.mysql_db
 
 #endif // ENVIRONMENT_H

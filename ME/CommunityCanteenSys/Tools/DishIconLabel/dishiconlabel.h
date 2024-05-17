@@ -11,6 +11,8 @@ class DishIconLabel : public QLabel
 public:
     explicit DishIconLabel(QWidget *parent = nullptr);
 
+    void setDishShowBar(DishShowBar *t); // 由于topWin，
+
 signals:
     void addSuccess();
     void deleteSuccess();

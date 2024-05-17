@@ -1,5 +1,6 @@
 #include "orderdishshowbar.h"
 #include "ui_orderdishshowbar.h"
+#include "Tools/MenuAlgorithm/menualgorithm.h"
 
 OrderDishShowBar::OrderDishShowBar(QString imagePath,
                                    QString dishName,
@@ -15,8 +16,9 @@ OrderDishShowBar::OrderDishShowBar(QString imagePath,
     if(imagePath.size() != 0)
     {
         QImage *DishImage = new QImage(imagePath);
-        DishImage = new QImage(DishImage->scaled(201, 141, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        ui->DishShow_lab->setPixmap(QPixmap::fromImage(*DishImage));
+        QPixmap t = QPixmap::fromImage(*DishImage);
+        t = MenuAlgorithm::PixmapToRound(t, 5, 129, 99);
+        ui->DishShow_lab->setPixmap(t);
     }
 
     ui->DishName_lab->setText(dishName);

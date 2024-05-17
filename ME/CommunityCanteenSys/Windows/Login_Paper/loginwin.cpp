@@ -9,23 +9,19 @@
 
 loginwin::loginwin(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::loginwin),
-    re(new registerwin),
-    control_win(new controlwin)
+    ui(new Ui::loginwin)
 {
     ui->setupUi(this);
     this->setFixedSize(512,527);
     this->setWindowTitle("USER LOGIN");
 
-    connect(re,&registerwin::register_complete,this,&loginwin::after_register_login);
-    connect(control_win,&controlwin::back_login_paper,this,&loginwin::after_control_win);
+    connect(&re,&registerwin::register_complete,this,&loginwin::after_register_login);
+    connect(&control_win,&controlwin::back_login_paper,this,&loginwin::after_control_win);
 }
 
 loginwin::~loginwin()
 {
-    DELETE(ui);
-    DELETE(re);
-    DELETE(control_win);
+    delete ui;
 }
 
 void loginwin::keyPressEvent(QKeyEvent *event)
@@ -42,18 +38,18 @@ void loginwin::keyPressEvent(QKeyEvent *event)
 void loginwin::on_register_pbtn_clicked()
 {
     this->hide();
-    re->show();
+    re.show();
 }
 
 void loginwin::after_register_login()
 {
-    re->hide();
+    re.hide();
     this->show();
 }
 
 void loginwin::after_control_win()
 {
-    control_win->hide();
+    control_win.hide();
     this->show();
 }
 
@@ -93,9 +89,10 @@ void loginwin::on_login_pbtn_clicked()
         {
             QMessageBox::information(this,"提示","登录成功！");
             // 打开主用户窗体
-            control_win->set_user_name(username);
-            control_win->triggered();
-            control_win->show();
+            control_win.set_user_name(username);
+            control_win.triggered();
+            control_win.show();
+
             this->hide();
             next_flage = 0;
         }

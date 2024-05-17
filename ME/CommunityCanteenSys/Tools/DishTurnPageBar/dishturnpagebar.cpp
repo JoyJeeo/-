@@ -4,7 +4,7 @@
 #include <QSqlQuery>
 #include <QDebug>
 
-DishTurnPageBar::DishTurnPageBar(QString *controlwin_username, QScrollArea* scrollArea, QWidget *parent) :
+DishTurnPageBar::DishTurnPageBar(QString **controlwin_username, QScrollArea* scrollArea, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DishTurnPageBar),
     controlwin_username(controlwin_username),
@@ -71,7 +71,7 @@ void DishTurnPageBar::dishShow()
 {
     for(int i = 0;i < dishManager.sizeDish();i++) dishManager[i]->hide();
 //    qDebug() << adminFlag;
-    int validDishSize = *controlwin_username == "admin" ?
+    int validDishSize = **controlwin_username == "admin" ?
                 dishManager.sizeDish() : dishManager.sizeDish() - 1;
 
     int i = curIndex * pageShowNum;
@@ -87,6 +87,17 @@ void DishTurnPageBar::dishShow()
     this->move(170,y + ((((--i % pageShowNum)) / 3) + 1) * 290 + 20);
     scrollArea->verticalScrollBar()->setValue(0);
 
+}
+
+int DishTurnPageBar::getCurIndex()
+{
+    return curIndex;
+}
+
+void DishTurnPageBar::setCurIndex(int index)
+{
+    curIndex = index;
+    ui->pageIndex_lineEdit->setText(QString::number(index));
 }
 
 void DishTurnPageBar::on_curIndex_lineEdit_textEdited(const QString &arg1)

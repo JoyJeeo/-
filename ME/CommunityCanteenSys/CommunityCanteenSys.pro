@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Tools/BuyCarTools/BuyCarDishShowBar/buycardishshowbar.cpp \
     Tools/BuyNumBar/buynumbar.cpp \
+    Tools/CarouselChartBar/carouselchartbar.cpp \
     Tools/DishIconLabel/dishiconlabel.cpp \
     Tools/DishInfoBar/dishinfobar.cpp \
     Tools/DishShowBar/dishshowbar.cpp \
@@ -31,7 +32,7 @@ SOURCES += \
     Windows/BuyCar_Pager/buycarwin.cpp \
     Windows/OrderDetail_Pager/orderdetailwin.cpp \
     Windows\Admin_Paper\adminwin.cpp \
-    Windows\Control_Pager\carouselchart.cpp \
+    Tools\CarouselChart\carouselchart.cpp \
     Windows\Login_Paper\loginwin.cpp \
     Windows\Control_Pager\controlwin.cpp \
     main.cpp \
@@ -41,6 +42,7 @@ SOURCES += \
 HEADERS += \
     Tools/BuyCarTools/BuyCarDishShowBar/buycardishshowbar.h \
     Tools/BuyNumBar/buynumbar.h \
+    Tools/CarouselChartBar/carouselchartbar.h \
     Tools/DishIconLabel/dishiconlabel.h \
     Tools/DishInfoBar/dishinfobar.h \
     Tools/DishShowBar/dishshowbar.h \
@@ -54,7 +56,7 @@ HEADERS += \
     Windows/BuyCar_Pager/buycarwin.h \
     Windows/OrderDetail_Pager/orderdetailwin.h \
     Windows\Admin_Paper\adminwin.h \
-    Windows\Control_Pager\carouselchart.h \
+    Tools\CarouselChart\carouselchart.h \
     Windows\Login_Paper\loginwin.h \
     Windows\Login_Paper\registerwin.h \
     Tools/tool_00_environment.h \

@@ -19,7 +19,7 @@ public:
     ~adminwin();
 
 signals:
-    void back();
+    void back(adminwin* t);
 
 private slots:
     void on_back_btn_clicked();
@@ -39,6 +39,9 @@ private slots:
     void on_insert_btn_clicked();
 
     void on_delete_btn_clicked();
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
 
 private:
     void triggered();

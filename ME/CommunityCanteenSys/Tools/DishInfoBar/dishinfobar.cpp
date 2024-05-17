@@ -48,18 +48,18 @@ void DishInfoBar::on_commit_ptn_clicked()
         QSqlQuery query(*DB);
         QString sql = QString("select * from dishesInfo order by DishIndex desc");
 
-            query.exec(sql);
-            query.next();
-            int index = query.value("DishIndex").toInt() + 1;
+        query.exec(sql);
+        query.next();
+        int index = query.value("DishIndex").toInt() + 1;
 
-            sql = QString("insert into dishesInfo "
-                              "values('%1','%2','%3','%4','%5');"
-                              )
-                    .arg(this->dishName)
-                    .arg(this->dishMoney)
-                    .arg(this->dishNum)
-                    .arg(this->dishImagePath)
-                    .arg(index);
+        sql = QString("insert into dishesInfo "
+                          "values('%1','%2','%3','%4','%5');"
+                          )
+                .arg(this->dishName)
+                .arg(this->dishMoney)
+                .arg(this->dishNum)
+                .arg(this->dishImagePath)
+                .arg(index);
 
         if(!query.exec(sql))
         {

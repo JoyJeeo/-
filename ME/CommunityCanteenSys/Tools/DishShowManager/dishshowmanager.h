@@ -4,8 +4,6 @@
 #include <QVector>
 #include "Tools/DishShowBar/dishshowbar.h"
 
-#define DELETE(ptr) if(ptr != nullptr) delete ptr
-
 class DishShowManager
 {
 public:

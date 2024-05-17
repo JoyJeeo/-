@@ -61,6 +61,7 @@ void OderDetailBar::on_detail_ptn_clicked()
     DetailBar *detailBar = new DetailBar(ui->orderTime_lab->text()
                                          ,controlwin_username,takeOrderTime);
     detailBar->setAttribute(Qt::WA_DeleteOnClose);
+    detailBar->setWindowModality(Qt::ApplicationModal);
     detailBar->show();
 
 }

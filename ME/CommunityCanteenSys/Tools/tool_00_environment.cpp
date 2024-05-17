@@ -1,6 +1,6 @@
 #include "tool_00_environment.h"
 
-Environment ev;
+Environment ve_ev;
 Environment::Environment()
 {
     make_mysql_db();

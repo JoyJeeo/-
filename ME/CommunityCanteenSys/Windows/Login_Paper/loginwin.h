@@ -29,8 +29,8 @@ private slots:
 
 private:
     Ui::loginwin *ui;
-    registerwin *re;
-    controlwin *control_win;
+    registerwin re;
+    controlwin control_win;
 };
 
 #endif // LOGINWIN_H

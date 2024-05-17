@@ -47,12 +47,9 @@
      <item>
       <widget class="QLabel" name="DishName_lab">
        <property name="styleSheet">
-        <string notr="true">/*
-QLabel
-{
-	background-color: #e8e8e4;  
-}
-*/</string>
+        <string notr="true">QLabel {
+    background-color: transparent; /* 设置背景色为透明 */
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -65,12 +62,9 @@ QLabel
      <item>
       <widget class="QLabel" name="Dishmoney_lab">
        <property name="styleSheet">
-        <string notr="true">/*
-QLabel
-{
-	background-color: #e8e8e4;  
-}
-*/</string>
+        <string notr="true">QLabel {
+    background-color: transparent; /* 设置背景色为透明 */
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -83,12 +77,9 @@ QLabel
      <item>
       <widget class="QLabel" name="DishBuyNum_lab">
        <property name="styleSheet">
-        <string notr="true">/*
-QLabel
-{
-	background-color: #e8e8e4;  
-}
-*/</string>
+        <string notr="true">QLabel {
+    background-color: transparent; /* 设置背景色为透明 */
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -101,12 +92,9 @@ QLabel
      <item>
       <widget class="QLabel" name="allMoney_lab">
        <property name="styleSheet">
-        <string notr="true">/*
-QLabel
-{
-	background-color: #e8e8e4;  
-}
-*/</string>
+        <string notr="true">QLabel {
+    background-color: transparent; /* 设置背景色为透明 */
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -128,7 +116,9 @@ QLabel
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">QLabel {
+    background-color: transparent; /* 设置背景色为透明 */
+}</string>
     </property>
     <property name="text">
      <string/>

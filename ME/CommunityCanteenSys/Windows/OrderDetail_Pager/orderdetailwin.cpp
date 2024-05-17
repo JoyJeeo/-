@@ -12,6 +12,7 @@ orderdetailwin::orderdetailwin(QString control_username,
     control_username(control_username)
 {
     ui->setupUi(this);
+    this->setFixedSize(this->size());
 
     this->setWindowTitle(control_username + "的订单详情");
 
@@ -26,6 +27,14 @@ orderdetailwin::orderdetailwin(QString control_username,
 orderdetailwin::~orderdetailwin()
 {
     delete ui;
+    for(int i = 0;i < orderDetails.size();i++)
+    {
+        if(orderDetails[i])
+        {
+            delete orderDetails[i];
+            orderDetails[i] = nullptr;
+        }
+    }
 }
 
 void orderdetailwin::deleteDishDetail(OderDetailBar *t)

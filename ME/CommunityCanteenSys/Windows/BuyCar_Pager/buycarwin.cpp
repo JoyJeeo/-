@@ -14,6 +14,7 @@ buycarwin::buycarwin(QString control_username, QWidget *parent) :
     control_username(control_username)
 {
     ui->setupUi(this);
+    this->setFixedSize(this->size());
 
     this->setWindowTitle(control_username + "的购物车");
 
@@ -32,6 +33,14 @@ buycarwin::buycarwin(QString control_username, QWidget *parent) :
 buycarwin::~buycarwin()
 {
     delete ui;
+    for(int i = 0;i < buyCarDishes.size();i++)
+    {
+        if(buyCarDishes[i])
+        {
+            delete buyCarDishes[i];
+            buyCarDishes[i] = nullptr;
+        }
+    }
 }
 
 void buycarwin::buyCarDishInitFromDB()

@@ -14,7 +14,7 @@ class DishShowBar : public QWidget
 
     friend class DishIconLabel;
 public:
-    explicit DishShowBar(QString *controlwin_username,QString DishImagePath,
+    explicit DishShowBar(QString **controlwin_username,QString DishImagePath,
                          QString DishName,QString DishMoney,QString DishNum,QString DishIndex,
                          QWidget *parent = nullptr);
     ~DishShowBar();
@@ -45,7 +45,7 @@ private:
 
 private:
     Ui::DishShowBar *ui;
-    QString *controlwin_username;
+    QString **controlwin_username;
 
     QImage *DishImage; QString *DishImagePath;
     QString *DishName;

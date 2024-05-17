@@ -26,7 +26,7 @@ adminwin::~adminwin()
 void adminwin::on_back_btn_clicked()
 {
     this->hide();
-    emit back();
+    emit back(this);
 }
 
 void adminwin::triggered()
@@ -342,6 +342,11 @@ void adminwin::on_delete_btn_clicked()
         ui->progress_Bar->setValue(0);
         ui->process_Details->setText(QString("Warning:当前记录为空,请先加载数据..."));
     }
+}
+
+void adminwin::closeEvent(QCloseEvent *event)
+{
+    on_back_btn_clicked();
 }
 
 

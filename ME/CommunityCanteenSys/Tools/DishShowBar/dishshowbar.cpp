@@ -6,26 +6,30 @@
 #include "Tools/tool_00_environment.h"
 #include <QSqlQuery>
 
-DishShowBar::DishShowBar(QString *controlwin_username, QString DishImagePath,
+DishShowBar::DishShowBar(QString **controlwin_username, QString DishImagePath,
                          QString DishName, QString DishMoney, QString DishNum,QString DishIndex,
                          QWidget *parent):
     QWidget(parent),
     ui(new Ui::DishShowBar),
     controlwin_username(controlwin_username),
+    DishImage(nullptr),
     DishImagePath(new QString(DishImagePath)),
     DishName(new QString(DishName)),DishMoney(new QString(DishMoney)),DishNum(new QString(DishNum)),
     DishIndex(new QString(DishIndex))
 {
     ui->setupUi(this);
+    ui->DishShow_lab->setDishShowBar(this);
     buynumbar = new BuyNumBar(this);
     buynumbar->move(0,ui->buyNow_ptn->y());
 
     if(DishImagePath.size() != 0)
     {
         DishImage = new QImage(DishImagePath);
-        this->DishImage = new QImage(this->DishImage->scaled(201, 141, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        ui->DishShow_lab->setPixmap(QPixmap::fromImage(*this->DishImage));
+        QPixmap t = QPixmap::fromImage(*this->DishImage);
+        t = MenuAlgorithm::PixmapToRound(t, 5, 199, 139);
+        ui->DishShow_lab->setPixmap(t);
     }
+
     ui->Dish_lab->setText(*this->DishName);
     ui->money_lab->setText(*this->DishMoney);
     ui->num_lab->setText(*this->DishNum);
@@ -34,12 +38,19 @@ DishShowBar::DishShowBar(QString *controlwin_username, QString DishImagePath,
     connect(ui->DishShow_lab,&DishIconLabel::addSuccess,[=](){emit this->addSuccess(this);});
     connect(ui->DishShow_lab,&DishIconLabel::deleteSuccess,[=](){emit this->deleteSuccess(this);});
 
-//    this->setStyleSheet("border: 1px solid red");
 }
 
 DishShowBar::~DishShowBar()
 {
     delete ui;
+    if(DishImagePath) {delete DishImagePath; DishImagePath = nullptr;}
+    if(DishName) {delete DishName; DishName = nullptr;}
+    if(DishMoney) {delete DishMoney; DishMoney = nullptr;}
+    if(DishNum) {delete DishNum; DishNum = nullptr;}
+    if(DishIndex) {delete DishIndex; DishIndex = nullptr;}
+    if(buynumbar) {delete buynumbar; buynumbar = nullptr;}
+    if(DishImage) {delete DishImage; DishImage = nullptr;}
+
 }
 
 QString *DishShowBar::getDishImagePath()
@@ -215,7 +226,7 @@ void DishShowBar::on_buyNow_ptn_clicked()
 
 void DishShowBar::writeDataToUserBuyCar(int buyNum)
 {
-    QString buyCarTable = *controlwin_username + "BuyCar";
+    QString buyCarTable = **controlwin_username + "BuyCar";
 
     QSqlQuery query(*DB);
     QString sql = QString("create table if not exists %1 "
@@ -285,7 +296,7 @@ void DishShowBar::writeDataToUserBuyCar(int buyNum)
 
 void DishShowBar::writeDataToUserOrderDetail(int buyNum)
 {
-    QString OrderDetailTable = *controlwin_username + "OrderDetail";
+    QString OrderDetailTable = **controlwin_username + "OrderDetail";
 
     QSqlQuery query(*DB);
     QString sql = QString("create table if not exists %1    "
