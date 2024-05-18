@@ -8,14 +8,15 @@
 static int Timer_time = 5000; // ms
 static int Pic_Smooth_time = 1000; // ms
 
-CarouselChart::CarouselChart(QWidget *parent) :
+CarouselChart::CarouselChart(QString **control_name, QWidget *parent) :
     QWidget(parent),
+    control_name(control_name),
     leftBtn(nullptr),
     rightBtn(nullptr),
-    timer(this->startTimer(Timer_time)),
     animationIsRunning(false),
     cur_index(0),
-    old_index(0)
+    old_index(0),
+    timer(this->startTimer(Timer_time))
 {
     this->setGeometry(0,0,parent->size().width(),parent->size().height());
 
@@ -109,7 +110,7 @@ void CarouselChart::carouseInitFromDB()
 
     while(query.next())
     {
-        CarouselChartBar *t = new CarouselChartBar(query.value("AnnoImagePath").toString(),
+        CarouselChartBar *t = new CarouselChartBar(control_name, query.value("AnnoImagePath").toString(),
                              query.value("AnnoIndex").toString(),this);
 
         connect(t,&CarouselChartBar::selectStart,this,&CarouselChart::on_start);

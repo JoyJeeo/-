@@ -10,6 +10,7 @@ class DishIconLabel : public QLabel
     Q_OBJECT
 public:
     explicit DishIconLabel(QWidget *parent = nullptr);
+    ~DishIconLabel();
 
     void setDishShowBar(DishShowBar *t); // 由于topWin，
 

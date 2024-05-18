@@ -5,10 +5,12 @@
 #include <QSqlQuery>
 #include <QDebug>
 
-CarouselChartBar::CarouselChartBar(QString annoImagePath,
+CarouselChartBar::CarouselChartBar(QString **control_name,
+                                   QString annoImagePath,
                                    QString annoIndex,
                                    QWidget *parent)
     : QLabel(parent),
+      control_name(control_name),
       annoImagePath(annoImagePath),
       annoIndex(annoIndex)
 {
@@ -25,6 +27,7 @@ CarouselChartBar::~CarouselChartBar()
 
 void CarouselChartBar::mousePressEvent(QMouseEvent *ev)
 {
+    if(**control_name != "admin") return;
     if(ev->button() == Qt::LeftButton)
     {
         emit selectStart();

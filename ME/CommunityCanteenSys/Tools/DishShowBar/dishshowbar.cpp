@@ -15,7 +15,8 @@ DishShowBar::DishShowBar(QString **controlwin_username, QString DishImagePath,
     DishImage(nullptr),
     DishImagePath(new QString(DishImagePath)),
     DishName(new QString(DishName)),DishMoney(new QString(DishMoney)),DishNum(new QString(DishNum)),
-    DishIndex(new QString(DishIndex))
+    DishIndex(new QString(DishIndex)),
+    buynumbar(nullptr)
 {
     ui->setupUi(this);
     ui->DishShow_lab->setDishShowBar(this);
@@ -80,35 +81,40 @@ QString *DishShowBar::getDishIndex()
 
 void DishShowBar::setDishImagePath(QString *t)
 {
+    _DELETE(DishImagePath)
     DishImagePath = t;
-    if(t->size() > 0)
-    {
-        DishImage = new QImage(*t);
-        this->DishImage = new QImage(this->DishImage->scaled(201, 141, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        ui->DishShow_lab->setPixmap(QPixmap::fromImage(*this->DishImage));
-    }
+    if(DishImage) { delete DishImage; DishImage =nullptr;}
+    DishImage = new QImage(*t);
+    QPixmap pixmap = QPixmap::fromImage(*this->DishImage);
+    pixmap = MenuAlgorithm::PixmapToRound(pixmap, 5, 199, 139);
+    ui->DishShow_lab->setPixmap(pixmap);
+
 }
 
 void DishShowBar::setDishName(QString *t)
 {
+    _DELETE(DishName)
     DishName = t;
     ui->Dish_lab->setText(*t);
 }
 
 void DishShowBar::setDishMoney(QString *t)
 {
+    _DELETE(DishMoney)
     DishMoney = t;
     ui->money_lab->setText(*t);
 }
 
 void DishShowBar::setDishNum(QString *t)
 {
+    _DELETE(DishNum)
     DishNum = t;
     ui->num_lab->setText(*t);
 }
 
 void DishShowBar::setDishIndex(QString *t)
 {
+    _DELETE(DishIndex)
     DishIndex = t;
 }
 

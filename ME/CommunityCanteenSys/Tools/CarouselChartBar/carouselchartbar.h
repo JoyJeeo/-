@@ -7,7 +7,8 @@ class CarouselChartBar : public QLabel
 {
     Q_OBJECT
 public:
-    explicit CarouselChartBar(QString annoImagePath,
+    explicit CarouselChartBar(QString **control_name,
+                              QString annoImagePath,
                               QString annoIndex,
                               QWidget *parent = nullptr);
     ~CarouselChartBar();
@@ -21,6 +22,8 @@ private:
 
 
 private:
+    QString **control_name;
+
     QString annoImagePath;
     QString annoIndex;
 

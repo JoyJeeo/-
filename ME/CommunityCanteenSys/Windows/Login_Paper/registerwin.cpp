@@ -12,7 +12,7 @@ registerwin::registerwin(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setFixedSize(512,527);
-    this->setWindowTitle("USER REGISTER");
+    this->setWindowTitle("用户注册");
 }
 
 registerwin::~registerwin()
@@ -55,18 +55,15 @@ void registerwin::on_register_pbtn_clicked()
         }
         else
         {
-            query.exec("select * from logininfo order by curid");
-            int id = -1;
-            for(int i = 0;i < query.size();i++)
-            {
-                query.next();
-                id = query.value(2).toInt();
-            }
-            id++;
+            sql = QString("select * from logininfo order by curid desc;");
+            query.exec(sql);
+            query.next();
+
+            int curid = query.size() == 0 ? 0 : query.value("curid").toInt() + 1;
 
             sql = QString("insert into logininfo values "
                           "('%1', '%2', '%3');"
-                          ).arg(username).arg(pwd).arg(id);
+                          ).arg(username).arg(pwd).arg(curid);
 
             if(query.exec(sql))
             {

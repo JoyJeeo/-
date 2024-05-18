@@ -91,19 +91,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="back_login_btn">
-        <property name="text">
-         <string>返回登陆</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="admin_btn">
         <property name="enabled">
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>ADMIN OPTION</string>
+         <string>用户管理</string>
         </property>
         <property name="checkable">
          <bool>false</bool>
@@ -116,6 +109,13 @@
         </property>
         <property name="flat">
          <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="back_login_btn">
+        <property name="text">
+         <string>返回登陆</string>
         </property>
        </widget>
       </item>

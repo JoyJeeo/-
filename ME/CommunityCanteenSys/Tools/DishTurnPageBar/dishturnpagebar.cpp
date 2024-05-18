@@ -129,8 +129,11 @@ void DishTurnPageBar::on_left_ptn_clicked()
 void DishTurnPageBar::on_right_ptn_clicked()
 {
     // 预判
-    curIndex = curIndex <  (dishManager.sizeDish() + pageShowNum - 1) / pageShowNum - 1 ?
-                curIndex + 1 : (dishManager.sizeDish() + pageShowNum - 1) / pageShowNum - 1;
+    int valid_size = **controlwin_username == "admin" ?
+                dishManager.sizeDish() : dishManager.sizeDish() - 1;
+
+    curIndex = curIndex <  (valid_size + pageShowNum - 1) / pageShowNum - 1 ?
+                curIndex + 1 : (valid_size + pageShowNum - 1) / pageShowNum - 1;
 
     // 展示
     dishShow();

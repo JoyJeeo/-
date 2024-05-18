@@ -10,6 +10,11 @@ DishIconLabel::DishIconLabel(QWidget *parent) :
 
 }
 
+DishIconLabel::~DishIconLabel()
+{
+
+}
+
 void DishIconLabel::setDishShowBar(DishShowBar *t)
 {
     dishShowBar = t;

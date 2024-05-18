@@ -19,7 +19,7 @@ public:
     ~adminwin();
 
 signals:
-    void back(adminwin* t);
+    void back();
 
 private slots:
     void on_back_btn_clicked();
@@ -47,6 +47,9 @@ private:
     void triggered();
 
     void move_curRow_base(int curRow,int step);
+
+private:
+    bool loadDataFlag;
 
 private:
     Ui::adminwin *ui;

@@ -13,7 +13,7 @@ class CarouselChart : public QWidget
     Q_OBJECT
 
 public:
-    explicit CarouselChart(QWidget *parent = nullptr);
+    explicit CarouselChart(QString **control_name, QWidget *parent = nullptr);
     ~CarouselChart();
 
 protected:
@@ -40,6 +40,7 @@ private:
 
 private:
     QVector<CarouselChartBar*> labels;
+    QString **control_name;
 
     QPushButton *leftBtn;
     QPushButton *rightBtn;

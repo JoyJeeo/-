@@ -13,7 +13,7 @@ loginwin::loginwin(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setFixedSize(512,527);
-    this->setWindowTitle("USER LOGIN");
+    this->setWindowTitle("用户登录");
 
     connect(&re,&registerwin::register_complete,this,&loginwin::after_register_login);
     connect(&control_win,&controlwin::back_login_paper,this,&loginwin::after_control_win);

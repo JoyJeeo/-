@@ -8,7 +8,7 @@ Environment::Environment()
 
 Environment::~Environment()
 {
-    DELETE(mysql_db);
+    if(mysql_db){delete mysql_db; mysql_db = nullptr;}
 }
 
 void Environment::make_mysql_db()

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "Tools/BuyNumBar/buynumbar.h"
+#define _DELETE(ptr) if(ptr) {delete ptr;ptr = nullptr;}
 
 namespace Ui {
 class DishShowBar;

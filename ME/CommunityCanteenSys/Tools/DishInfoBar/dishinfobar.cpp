@@ -4,21 +4,25 @@
 #include "Tools/tool_00_environment.h"
 #include <QSqlQuery>
 #include <QMessageBox>
+#include <QDebug>
 
 DishInfoBar::DishInfoBar(DishShowBar *t, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::DishInfoBar)
+    ui(new Ui::DishInfoBar),
+    selfDishShowBar(nullptr)
 {
     ui->setupUi(this);
-    if(t) selfDishShowBar = t;
     this->setWindowTitle(ui->Title_label->text());
-
     this->setFixedSize(430,447);
 
-    ui->setDishImagePathSelect_lineEdit->setText(*this->selfDishShowBar->getDishImagePath());
-    ui->setDishName_lineEdit->setText(*this->selfDishShowBar->getDishName());
-    ui->setDishMoney_lineEdit->setText(*this->selfDishShowBar->getDishMoney());
-    ui->setDishNum_lineEdit->setText(*this->selfDishShowBar->getDishNum());
+    if(t)
+    {
+        selfDishShowBar = t;
+        ui->setDishImagePathSelect_lineEdit->setText(*this->selfDishShowBar->getDishImagePath());
+        ui->setDishName_lineEdit->setText(*this->selfDishShowBar->getDishName());
+        ui->setDishMoney_lineEdit->setText(*this->selfDishShowBar->getDishMoney());
+        ui->setDishNum_lineEdit->setText(*this->selfDishShowBar->getDishNum());
+    }
 }
 
 DishInfoBar::~DishInfoBar()
@@ -38,6 +42,13 @@ void DishInfoBar::on_dishImagePathSelect_ptn_clicked()
 
 void DishInfoBar::on_commit_ptn_clicked()
 {
+    if(!this->selfDishShowBar)
+    {
+        QMessageBox::critical(nullptr,"选项卡错误","选项卡地址为空");
+        return;
+    }
+
+    // 获取info的修改信息
     this->dishImagePath = ui->setDishImagePathSelect_lineEdit->text();
     this->dishName = ui->setDishName_lineEdit->text();
     this->dishMoney = ui->setDishMoney_lineEdit->text();
@@ -52,6 +63,7 @@ void DishInfoBar::on_commit_ptn_clicked()
         query.next();
         int index = query.value("DishIndex").toInt() + 1;
 
+        // 写给数据库
         sql = QString("insert into dishesInfo "
                           "values('%1','%2','%3','%4','%5');"
                           )
@@ -68,6 +80,7 @@ void DishInfoBar::on_commit_ptn_clicked()
         }
         else
         {
+            // 写给上层
             // 加入成功
             this->selfDishShowBar->setDishImagePath(new QString(this->dishImagePath));
             this->selfDishShowBar->setDishName(new QString(this->dishName));
@@ -85,6 +98,7 @@ void DishInfoBar::on_commit_ptn_clicked()
     }
     else
     {
+        // 写给数据库
         // 修改菜品信息
         QSqlQuery query(*DB);
         QString sql = QString("update dishesInfo set "
@@ -103,11 +117,15 @@ void DishInfoBar::on_commit_ptn_clicked()
         }
         else
         {
+            // 写给上层
             // 加入成功
             this->selfDishShowBar->setDishImagePath(new QString(this->dishImagePath));
             this->selfDishShowBar->setDishName(new QString(this->dishName));
             this->selfDishShowBar->setDishMoney(new QString(this->dishMoney));
             this->selfDishShowBar->setDishNum(new QString(this->dishNum));
+
+            // 上层发送新增成功信号
+            emit addSuccess();
 
             // 修改成功
             QMessageBox::information(nullptr,"菜品选项卡信息","修改菜品信息成功");
@@ -126,6 +144,13 @@ void DishInfoBar::on_cancel_ptn_clicked()
 
 void DishInfoBar::on_deleteDish_ptn_clicked()
 {
+    if(*this->selfDishShowBar->getDishIndex() == "-1") return;
+    if(!this->selfDishShowBar)
+    {
+        QMessageBox::critical(nullptr,"选项卡错误","选项卡地址为空");
+        return;
+    }
+
     // 删除数据库中数据
     QSqlQuery query(*DB);
     QString sql = QString("delete from dishesInfo "

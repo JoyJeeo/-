@@ -160,8 +160,8 @@ void buycarwin::on_deleteSelect_ptn_clicked()
 
     if(flag)
     {
-         ui->allPay_lab->setText("总计金额：0元");
-         ui->allSelect_ckbox->setCheckState(Qt::Unchecked);
+        ui->allPay_lab->setText("总计金额：0元");
+        ui->allSelect_ckbox->setCheckState(Qt::Unchecked);
 
         showBuyCarDish();
     }

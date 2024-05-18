@@ -49,5 +49,9 @@ create table if not exists adminOrderDetail
     TakeOrderTime datetime
 );
 
-
+create table test
+(
+	username varchar(10),
+    userpwd varchar(15)
+);
 

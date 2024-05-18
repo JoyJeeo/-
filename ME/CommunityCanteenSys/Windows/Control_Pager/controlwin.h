@@ -23,7 +23,7 @@ signals:
 
 private slots:
     void on_back_login_btn_clicked();
-    void on_admin_back(adminwin* t);
+    void on_admin_back();
     void on_admin_btn_clicked();
 
 private:

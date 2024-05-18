@@ -24,7 +24,7 @@ controlwin::controlwin(QWidget *parent) :
                     ui->Anno_Dishes_Area, ui->Anno_Dishes_AreaContents); // ui必须先构造到窗口上
     dishTurnPageBar->dishInitfromDB();
 
-    this->carouselchart = new CarouselChart(ui->AnnoWin);
+    this->carouselchart = new CarouselChart(&user_name, ui->AnnoWin);
 
     this->setFixedSize(1000,700);
     connect(ui->userIcon_label,&UserIconLabel::back,this,&controlwin::setUserIcon);
@@ -45,16 +45,15 @@ void controlwin::on_back_login_btn_clicked()
     emit back_login_paper();
 }
 
-void controlwin::on_admin_back(adminwin *t)
+void controlwin::on_admin_back()
 {
-    t->hide();
     this->show();
-    if(t) delete t; t = nullptr;
 }
 
 void controlwin::on_admin_btn_clicked()
 {
     adminwin *admin_win = new adminwin;
+    admin_win->setAttribute(Qt::WA_DeleteOnClose);
     connect(admin_win,&adminwin::back,this,&controlwin::on_admin_back);
     this->hide();
     admin_win->triggered();
@@ -145,7 +144,7 @@ void controlwin::on_buy_car_btn_clicked()
 
     query.exec(sql);
 
-    buycarwin *buyCarWin = new buycarwin(*user_name); // 继承关系
+    buycarwin *buyCarWin = new buycarwin(*user_name);
     buyCarWin->setAttribute(Qt::WA_DeleteOnClose);
     buyCarWin->setWindowModality(Qt::ApplicationModal);
     buyCarWin->show();
@@ -168,7 +167,7 @@ void controlwin::on_order_details_btn_clicked()
 
     query.exec(sql);
 
-    orderdetailwin *orderDetailWin = new orderdetailwin(*user_name); // 继承关系
+    orderdetailwin *orderDetailWin = new orderdetailwin(*user_name);
     orderDetailWin->setAttribute(Qt::WA_DeleteOnClose);
     orderDetailWin->setWindowModality(Qt::ApplicationModal);
     orderDetailWin->show();
