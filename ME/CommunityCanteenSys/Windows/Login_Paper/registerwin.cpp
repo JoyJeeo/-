@@ -9,7 +9,8 @@
 
 registerwin::registerwin(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::registerwin)
+    ui(new Ui::registerwin),
+    watchEye(nullptr)
 {
     ui->setupUi(this);
 
@@ -19,19 +20,45 @@ registerwin::registerwin(QWidget *parent) :
     palette.setBrush(this->backgroundRole(),QBrush(pixmap));//用调色板的画笔把映射到pixmap上的图片画到            frame.backgroundRole()这个背景上
     this->setPalette(palette);//设置窗口调色板为palette，窗口和画笔相关联
 
+    watchEye = new HoverableLabel(this);
+    QImage *image = new QImage("D:/MyDesktop/Graduation/ME/CommunityCanteenSys/Image/OrderDetail_ICONs/watchDetail.png");
+    image = new QImage(image->scaled(30, 30, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    watchEye->setPixmap(QPixmap::fromImage(*image));
+    watchEye->move(414, 277);
+    watchEye->setMinimumSize(30,30);
+    watchEye->setStyleSheet(
+                "QLabel{background-color: rgb(178,180,164,40%);  border-radius: 15px;border: 1px;}"
+                "QLabel:hover{background-color: gray; border-radius: 15px;border: 1px;}"
+                           );
+
     this->setFixedSize(512,527);
     this->setWindowTitle("用户注册");
+    connect(this->watchEye,&HoverableLabel::mouseEntered,this,&registerwin::on_enter_watchEye);
+    connect(this->watchEye,&HoverableLabel::mouseLeft,this,&registerwin::on_leave_watchEye);
 }
 
 registerwin::~registerwin()
 {
     delete ui;
+    delete watchEye;
 }
 
 void registerwin::keyPressEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
         on_register_pbtn_clicked();
+}
+
+void registerwin::on_enter_watchEye()
+{
+    // 显示密码
+    ui->pwd_lineEdit->setEchoMode(QLineEdit::Normal);
+}
+
+void registerwin::on_leave_watchEye()
+{
+    // 隐藏密码（显示为星号或点）
+    ui->pwd_lineEdit->setEchoMode(QLineEdit::Password);
 }
 
 void registerwin::on_register_pbtn_clicked()

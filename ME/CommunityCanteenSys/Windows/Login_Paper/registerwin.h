@@ -2,6 +2,7 @@
 #define REGISTERWIN_H
 
 #include <QWidget>
+#include "Tools/HoverableLabel/hoverablelabel.h"
 
 namespace Ui {
 class registerwin;
@@ -25,9 +26,12 @@ private slots:
     void on_register_pbtn_clicked();
 
     void on_pushButton_clicked();
+    void on_enter_watchEye();
+    void on_leave_watchEye();
 
 private:
     Ui::registerwin *ui;
+    HoverableLabel *watchEye;
 };
 
 #endif // REGISTERWIN_H
