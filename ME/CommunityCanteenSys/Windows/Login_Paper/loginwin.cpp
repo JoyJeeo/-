@@ -10,7 +10,8 @@
 
 loginwin::loginwin(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::loginwin)
+    ui(new Ui::loginwin),
+    watchEye(nullptr)
 {
     ui->setupUi(this);
 
@@ -20,16 +21,30 @@ loginwin::loginwin(QWidget *parent) :
     palette.setBrush(this->backgroundRole(),QBrush(pixmap));//用调色板的画笔把映射到pixmap上的图片画到            frame.backgroundRole()这个背景上
     this->setPalette(palette);//设置窗口调色板为palette，窗口和画笔相关联
 
+    watchEye = new HoverableLabel(this);
+    QImage *image = new QImage("D:/MyDesktop/Graduation/ME/CommunityCanteenSys/Image/OrderDetail_ICONs/watchDetail.png");
+    image = new QImage(image->scaled(30, 30, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    watchEye->setPixmap(QPixmap::fromImage(*image));
+    watchEye->move(414, 277);
+    watchEye->setMinimumSize(30,30);
+    watchEye->setStyleSheet(
+                "QLabel{background-color: rgb(178,180,164,40%);  border-radius: 15px;border: 1px;}"
+                "QLabel:hover{background-color: gray; border-radius: 15px;border: 1px;}"
+                           );
+
     this->setFixedSize(512,527);
     this->setWindowTitle("用户登录");
 
     connect(&re,&registerwin::register_complete,this,&loginwin::after_register_login);
     connect(&control_win,&controlwin::back_login_paper,this,&loginwin::after_control_win);
+    connect(this->watchEye,&HoverableLabel::mouseEntered,this,&loginwin::on_enter_watchEye);
+    connect(this->watchEye,&HoverableLabel::mouseLeft,this,&loginwin::on_leave_watchEye);
 }
 
 loginwin::~loginwin()
 {
     delete ui;
+    delete watchEye;
 }
 
 void loginwin::keyPressEvent(QKeyEvent *event)
@@ -59,6 +74,18 @@ void loginwin::after_control_win()
 {
     control_win.hide();
     this->show();
+}
+
+void loginwin::on_enter_watchEye()
+{
+    // 显示密码
+    ui->pwd_lineEdit->setEchoMode(QLineEdit::Normal);
+}
+
+void loginwin::on_leave_watchEye()
+{
+    // 隐藏密码（显示为星号或点）
+    ui->pwd_lineEdit->setEchoMode(QLineEdit::Password);
 }
 
 void loginwin::on_login_pbtn_clicked()

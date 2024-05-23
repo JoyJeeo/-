@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "registerwin.h"
 #include "Windows\Control_Pager\controlwin.h"
+#include "Tools/HoverableLabel/hoverablelabel.h"
 
 namespace Ui {
 class loginwin;
@@ -24,11 +25,14 @@ private slots:
     void on_register_pbtn_clicked();
     void after_register_login();
     void after_control_win();
+    void on_enter_watchEye();
+    void on_leave_watchEye();
 
     void on_login_pbtn_clicked();
 
 private:
     Ui::loginwin *ui;
+    HoverableLabel *watchEye;
     registerwin re;
     controlwin control_win;
 };

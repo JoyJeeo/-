@@ -24,6 +24,7 @@ SOURCES += \
     Tools/DishShowBar/dishshowbar.cpp \
     Tools/DishShowManager/dishshowmanager.cpp \
     Tools/DishTurnPageBar/dishturnpagebar.cpp \
+    Tools/HoverableLabel/hoverablelabel.cpp \
     Tools/MenuAlgorithm/menualgorithm.cpp \
     Tools/OrderDetailTools/DetailBar/detailbar.cpp \
     Tools/OrderDetailTools/OderDetailBar/oderdetailbar.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     Tools/DishShowBar/dishshowbar.h \
     Tools/DishShowManager/dishshowmanager.h \
     Tools/DishTurnPageBar/dishturnpagebar.h \
+    Tools/HoverableLabel/hoverablelabel.h \
     Tools/MenuAlgorithm/menualgorithm.h \
     Tools/OrderDetailTools/DetailBar/detailbar.h \
     Tools/OrderDetailTools/OderDetailBar/oderdetailbar.h \
@@ -85,5 +87,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RC_ICONS = logo.ico
 
-RESOURCES += \
-    Backgrounds.qrc
+RESOURCES +=
