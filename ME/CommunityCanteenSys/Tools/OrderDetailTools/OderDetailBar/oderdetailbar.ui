@@ -22,6 +22,14 @@
      <height>51</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+   background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:0.5 rgba(0, 255, 0, 255), stop:1 rgba(0, 0, 255, 255)); /* 设置背景为红绿蓝的渐变色 */
+   color: #ffffff; /* 设置文本颜色为白色 */
+   font-size: 20px; /* 设置字体大小 */
+}
+</string>
+   </property>
    <property name="text">
     <string>订单时间</string>
    </property>

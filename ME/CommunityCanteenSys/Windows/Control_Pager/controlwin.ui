@@ -30,9 +30,11 @@
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true">QFrame{
+     <string notr="true">/*
+QFrame{
 	background-color: #e8e8e4;
-}</string>
+}
+*/</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -46,7 +48,7 @@
        <x>0</x>
        <y>320</y>
        <width>281</width>
-       <height>137</height>
+       <height>177</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -61,12 +63,22 @@
         <property name="font">
          <font>
           <family>Consolas</family>
-          <pointsize>12</pointsize>
+          <pointsize>15</pointsize>
           <weight>75</weight>
           <bold>true</bold>
           <underline>false</underline>
           <strikeout>false</strikeout>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+    background-color: #dfe6e9; /* 设置背景颜色为淡灰色 */
+    color: #34495e; /* 设置文本颜色为墨蓝色 */
+    border-radius: 8px; /* 设置更大的圆角 */
+    padding: 10 15px; /* 设置稍大一点的内边距 */
+    border: 2px solid #bdc3c7; /* 设置边框颜色为浅灰色 */
+}
+</string>
         </property>
         <property name="text">
          <string>用户名</string>
@@ -78,6 +90,22 @@
       </item>
       <item>
        <widget class="QPushButton" name="buy_car_btn">
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color: #3498db; /* 设置背景颜色 */
+    color: #ffffff; /* 设置文本颜色 */
+    border: 2px solid #2980b9; /* 设置边框 */
+    border-radius: 5px; /* 设置圆角 */
+    padding: 5px 10px; /* 设置内边距 */
+}
+QPushButton:hover {
+    background-color: #3b5998; /* 悬停时的背景颜色 */
+}
+
+QPushButton:pressed {
+    background-color: #2980b9; /* 按下时的背景颜色 */
+}</string>
+        </property>
         <property name="text">
          <string>购物车</string>
         </property>
@@ -85,6 +113,22 @@
       </item>
       <item>
        <widget class="QPushButton" name="order_details_btn">
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color: #2ecc71;
+    color: #ffffff;
+    border: 2px solid #27ae60;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+QPushButton:hover {
+    background-color: #27ae60;
+}
+
+QPushButton:pressed {
+    background-color: #229954;
+}</string>
+        </property>
         <property name="text">
          <string>订单详情</string>
         </property>
@@ -94,6 +138,22 @@
        <widget class="QPushButton" name="admin_btn">
         <property name="enabled">
          <bool>true</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color: #f1c40f;
+    color: #ffffff;
+    border: 2px solid #f39c12;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+QPushButton:hover {
+    background-color: #f39c12;
+}
+
+QPushButton:pressed {
+    background-color: #d68910;
+}</string>
         </property>
         <property name="text">
          <string>用户管理</string>
@@ -114,6 +174,22 @@
       </item>
       <item>
        <widget class="QPushButton" name="back_login_btn">
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color: #e74c3c;
+    color: #ffffff;
+    border: 2px solid #c0392b;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+QPushButton:hover {
+    background-color: #c0392b;
+}
+
+QPushButton:pressed {
+    background-color: #a83224;
+}</string>
+        </property>
         <property name="text">
          <string>返回登陆</string>
         </property>
@@ -170,9 +246,11 @@
      </sizepolicy>
     </property>
     <property name="styleSheet">
-     <string notr="true">QFrame{
+     <string notr="true">/*
+QFrame{
 	background-color: #e8e8e4;
-}</string>
+}
+*/</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -183,6 +261,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QScrollArea" name="Anno_Dishes_Area">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <property name="widgetResizable">
         <bool>true</bool>
        </property>
@@ -200,6 +281,11 @@
           <width>0</width>
           <height>1000</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QWidget#Anno_Dishes_AreaContents{
+    background:transparent;
+}</string>
         </property>
         <widget class="QWidget" name="AnnoWin" native="true">
          <property name="geometry">

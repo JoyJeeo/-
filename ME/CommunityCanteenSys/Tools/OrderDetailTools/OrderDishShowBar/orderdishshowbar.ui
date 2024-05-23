@@ -25,13 +25,10 @@
    <property name="styleSheet">
     <string notr="true">#topWin
 {    
-	background-color: #f2f2f2; /* 设置背景颜色 */
+	background-color: rgb(179,179,164,20%); /* 设置背景颜色 */
     border: 1px solid #c0c0c0; /* 设置边框 */
     border-radius: 5px; /* 设置圆角 */
     padding: 5px 10px; /* 设置内边距 */
-}
-QLabel {
-    background-color: transparent; /* 设置背景色为透明 */
 }</string>
    </property>
    <widget class="QLabel" name="DishShow_lab">
@@ -56,7 +53,7 @@ QLabel {
       <x>0</x>
       <y>110</y>
       <width>131</width>
-      <height>71</height>
+      <height>76</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">

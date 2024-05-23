@@ -57,16 +57,29 @@
       <height>409</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QWidget#scrollAreaContents{
+    background:transparent;
+}</string>
+    </property>
    </widget>
   </widget>
   <widget class="QLabel" name="allPay_lab">
    <property name="geometry">
     <rect>
-     <x>490</x>
+     <x>390</x>
      <y>500</y>
-     <width>121</width>
+     <width>221</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+   color: #ffffff; /* 设置文本颜色为白色 */
+   font-size: 20px; /* 设置字体大小 */
+   padding: 20px; /* 设置内边距 */
+}
+</string>
    </property>
    <property name="text">
     <string>总计金额：</string>
@@ -80,6 +93,25 @@
      <width>101</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+   background-color: #a18bf7; /* 设置背景颜色为淡紫色 */
+   color: #ffffff; /* 设置文字颜色为白色 */
+   border: none; /* 去除边框 */
+  border-radius: 5px; /* 设置边框为5像素的圆角 */
+
+}
+
+   /* 悬停样式 */
+   QPushButton:hover {
+       background-color: #8570e8; /* 设置悬停时的背景颜色 */
+   }
+
+   /* 按下样式 */
+   QPushButton:pressed {
+       background-color: #6b57cc; /* 设置按下时的背景颜色 */
+   }</string>
    </property>
    <property name="text">
     <string>确认</string>

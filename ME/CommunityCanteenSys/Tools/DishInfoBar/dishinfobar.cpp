@@ -5,6 +5,7 @@
 #include <QSqlQuery>
 #include <QMessageBox>
 #include <QDebug>
+#include "Tools/MenuAlgorithm/menualgorithm.h"
 
 DishInfoBar::DishInfoBar(DishShowBar *t, QWidget *parent) :
     QWidget(parent),
@@ -23,6 +24,23 @@ DishInfoBar::DishInfoBar(DishShowBar *t, QWidget *parent) :
         ui->setDishMoney_lineEdit->setText(*this->selfDishShowBar->getDishMoney());
         ui->setDishNum_lineEdit->setText(*this->selfDishShowBar->getDishNum());
     }
+
+    QPixmap pixmap("D:/MyDesktop/Graduation/ME/CommunityCanteenSys/Image/Background_PICS/dishInfo.jpg");//设定图片
+
+    /*设置添加图片的灰度值，将自定义的图片上灰度*/
+//    QPainter p1(&pixmap);
+//    p1.setCompositionMode(QPainter::CompositionMode_Source);
+//    p1.drawPixmap(0, 0, pixmap);
+//    p1.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+
+//    //根据QColor中第四个参数设置透明度，0～255
+//    p1.fillRect(pixmap.rect(), QColor(179,179,164, 220));
+//    p1.end();
+
+    pixmap = MenuAlgorithm::PixmapToRound(pixmap,0,this->width(),this->height());
+    QPalette palette;//创建一个调色板对象
+    palette.setBrush(this->backgroundRole(),QBrush(pixmap));//用调色板的画笔把映射到pixmap上的图片画到            frame.backgroundRole()这个背景上
+    this->setPalette(palette);//设置窗口调色板为palette，窗口和画笔相关联
 }
 
 DishInfoBar::~DishInfoBar()

@@ -5,12 +5,20 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include "Tools/tool_00_environment.h"
+#include "Tools/MenuAlgorithm/menualgorithm.h"
 
 registerwin::registerwin(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::registerwin)
 {
     ui->setupUi(this);
+
+    QPixmap pixmap("D:/MyDesktop/Graduation/ME/CommunityCanteenSys/Image/Background_PICS/register.jpg");//设定图片
+    pixmap = MenuAlgorithm::PixmapToRound(pixmap,0,this->width(),this->height());
+    QPalette palette;//创建一个调色板对象
+    palette.setBrush(this->backgroundRole(),QBrush(pixmap));//用调色板的画笔把映射到pixmap上的图片画到            frame.backgroundRole()这个背景上
+    this->setPalette(palette);//设置窗口调色板为palette，窗口和画笔相关联
+
     this->setFixedSize(512,527);
     this->setWindowTitle("用户注册");
 }

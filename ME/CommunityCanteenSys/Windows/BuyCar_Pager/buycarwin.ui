@@ -52,16 +52,37 @@
       <height>0</height>
      </size>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QWidget#scrollAreaContents{
+    background:transparent;
+}</string>
+    </property>
    </widget>
   </widget>
   <widget class="QLabel" name="allPay_lab">
    <property name="geometry">
     <rect>
-     <x>500</x>
+     <x>410</x>
      <y>650</y>
-     <width>151</width>
+     <width>241</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Consolas</family>
+     <pointsize>-1</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+   color: #ffffff; /* 设置文本颜色为白色 */
+   font-size: 20px; /* 设置字体大小 */
+   padding: 20px; /* 设置内边距 */
+}
+</string>
    </property>
    <property name="text">
     <string>总额：XXX元</string>
@@ -76,6 +97,24 @@
      <height>23</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+   background-color: #4CAF50; /* 设置背景颜色为绿色 */
+   color: #ffffff; /* 设置文字颜色为白色 */
+   border: none; /* 去除边框 */
+   border-radius: 5px; /* 设置边框为5像素的圆角 */
+}
+   /* 悬停样式 */
+   QPushButton:hover {
+       background-color: #45a049; /* 设置悬停时的背景颜色 */
+   }
+
+   /* 按下样式 */
+   QPushButton:pressed {
+       background-color: #3e8e41; /* 设置按下时的背景颜色 */
+   }
+</string>
+   </property>
    <property name="text">
     <string>购买</string>
    </property>
@@ -88,6 +127,23 @@
      <width>75</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton { 
+   background-color: #ffcc00; /* 设置背景颜色为黄色 */
+   color: #ffffff; /* 设置文字颜色为白色 */
+   border: none; /* 去除边框 */
+   border-radius: 5px; /* 设置边框为5像素的圆角 */
+}
+   /* 悬停样式 */
+   QPushButton:hover {
+       background-color: #e6b800; /* 设置悬停时的背景颜色 */
+   }
+
+   /* 按下样式 */
+   QPushButton:pressed {
+       background-color: #cca300; /* 设置按下时的背景颜色 */
+   }</string>
    </property>
    <property name="text">
     <string>取消</string>
@@ -108,6 +164,9 @@
      <weight>75</weight>
      <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>购物车</string>
@@ -142,6 +201,24 @@
      <height>23</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+   background-color: #ff4d4d; /* 设置背景颜色为红色 */
+   color: #ffffff; /* 设置文字颜色为白色 */
+   border: none; /* 去除边框 */
+   border-radius: 5px; /* 设置边框为5像素的圆角 */
+}
+   /* 悬停样式 */
+   QPushButton:hover {
+       background-color: #e64040; /* 设置悬停时的背景颜色 */
+   }
+
+   /* 按下样式 */
+   QPushButton:pressed {
+       background-color: #cc3333; /* 设置按下时的背景颜色 */
+   }
+</string>
+   </property>
    <property name="text">
     <string>删除选中</string>
    </property>
@@ -152,8 +229,25 @@
      <x>30</x>
      <y>650</y>
      <width>71</width>
-     <height>16</height>
+     <height>21</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QCheckBox {
+    background-color: #f0f0f0; /* 设置背景颜色为淡灰色 */
+	border-radius: 5px; /* 设置边框为5像素的圆角 */
+	padding: 3px; /* 设置内边距 */
+}
+    /* 悬停样式 */
+    QCheckBox:hover {
+        background-color: #e0e0e0; /* 设置悬停时的背景颜色 */
+    }
+
+    /* 按下样式 */
+    QCheckBox:pressed {
+        background-color: #c0c0c0; /* 设置按下时的背景颜色 */
+    }
+</string>
    </property>
    <property name="text">
     <string>全选</string>

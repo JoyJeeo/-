@@ -40,6 +40,11 @@
       <height>0</height>
      </size>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QWidget#scrollAreaContents{
+    background:transparent;
+}</string>
+    </property>
    </widget>
   </widget>
   <widget class="QLabel" name="orderIcon_lab">
